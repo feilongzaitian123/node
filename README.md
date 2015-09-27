@@ -115,7 +115,64 @@
 
     <https://github.com/visionmedia/debug>
 
-    
-
 ## node-debugger
+
+-   官方
+
+    <https://nodejs.org/api/debugger.html>
+
+-   启动
+
+    `node debug server.js`
+
+-   断点
+
+    `debugger;` 在程序中设置断点
+
+    `setBreakpoint() (sb())` 在调试器中设置断点
+
+    `clearBreakpoint() (cb())` 在调试器中取消断点
+
+-   命令
+    
+    | 可选项 | 用途    | 
+    |-------|------------| 
+    | run   | 执行脚本,在第一行暂停| 
+    | restart   | 重新执行脚本| 
+    | cont, c   | 继续执行,直到遇到下一个断点| 
+    | next, n   | 单步执行| 
+    | step, s   | 单步执行并进入函数| 
+    | out, o    | 从函数中步出| 
+    | setBreakpoint(), sb() | 当前行设置断点| 
+    | setBreakpoint(‘f()’), sb(...)| 在函数f的第一行设置断点| 
+    | setBreakpoint(‘script.js’, 20), sb(...)| 在 script.js 的第20行设置断点| 
+    | clearBreakpoint, cb(...)| 清除所有断点| 
+    | backtrace, bt| 显示当前的调用栈| 
+    | list(5)| 显示当前执行到的前后5行代码| 
+    | watch(expr)| 把表达式 expr 加入监视列表| 
+    | unwatch(expr)|  把表达式 expr 从监视列表移除 | 
+    | watchers| 显示监视列表中所有的表达式和值| 
+    | repl| 在当前上下文打开即时求值环境| 
+    | kill| 终止当前执行的脚本| 
+    | scripts| 显示当前已加载的所有脚本| 
+    | version| 显示v8版本|
+
+-   更多
+
+    <http://i5ting.github.io/node-debug-tutorial/>
+
 ## node-inspector
+
+-   官方
+
+    <https://github.com/node-inspector/node-inspector>
+
+-   安装
+
+    `npm install -g node-inspector`
+
+-   启动
+
+    `node-debug app.js`
+
+# 测试
