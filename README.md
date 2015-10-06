@@ -176,37 +176,3 @@
     `node-debug app.js`
 
 # 测试
-
-# 知识点
-## 关于 require 和同步I/O
-require 是Node中少数几个同步I/O操作之一。因为经常用到模块,并且一般都是在文件
-顶端引入,所以把 require 做成同步的有助于保持代码的整洁、有序,还能增强可读性。但在
-程序中I/O密集的地方尽量不要用 require 。所有同步调用都会阻塞Node,直到调用完成才能
-做其他事情。比如你正在运行一个HTTP服务器,如果在每个进入的请求上都用了 require ,
-就会遇到性能问题。所以通常都只在程序最初加载时才使用 require 和其他同步操作。
-
-## module.exports
-
-    var Currency = function(canadianDollar) {
-      this.canadianDollar = canadianDollar;
-    }
-    Currency.prototype.roundTwoDecimals = function(amount) {
-      return Math.round(amount * 100) / 100;
-    }
-    Currency.prototype.canadianToUS = function(canadian) {
-      return this.roundTwoDecimals(canadian * this.canadianDollar);
-    }
-    Currency.prototype.USToCanadian = function(us) {
-      return this.roundTwoDecimals(us / this.canadianDollar);
-    }
-    module.exports = Currency;
-
-## 异步编程技术
-在Node的世界里流行两种响应逻辑管理方式:`回调`和`事件监听`。
-- 回调
-
-回调通常用来定义一次性响应的逻辑。
-
-- 事件监听
-
-事件监听器,本质上也是一个回调,不同的是,它跟一个概念实体(事件)相关联。用事件监听器响应重复性事件。
