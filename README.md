@@ -46,11 +46,11 @@
 # 调试
 ## 代码检查
 
--   JSLint
+-   `JSLint`
     
     JSLint是一个JavaScript验证工具（非开源），可以扫描JavaScript源代码来查找问题。
 
--   JSHint
+-   `JSHint`
 
     JSHint是基于JSLint的项目,JSLint是一个存在了十多年的JavaScript源码分析工具。然而
     JSLint的可配置性不太强,因此促生了JSHint。
@@ -62,13 +62,13 @@
         npm install -g jshint
         jshint my_app.js
 
--   JSCritic    
+-   `JSCritic`    
 
     JSCritic 是一个 JavaScript 代码质量检测工具。该工具使用 JSHint 进行检查代码质量，同时提供一个在线的版本。
 
     <https://github.com/kangax/jscritic>
 
--   node-jscs
+-   `node-jscs`
 
     node-jscs 是一个 JavaScript 的代码风格检查工具。可在 Node.js 和浏览器中使用
 
@@ -76,7 +76,7 @@
 
 ## 调试输出
 
--   console.log
+-   `console.log`
 
     用来向标准输出中输出程序的状态信息
 
@@ -84,20 +84,20 @@
 
     可以给出 printf() 风格的参数，如： `console.log('Counter: %d', counter);`
 
--   console.warn, console.error
+-   `console.warn`, `console.error`
 
     而输出警告和错误信息的 console.warn 和 console.error 函数也差不多。唯一的区别是
     它们不是显示到标准输出中,而是显示到标准错误中。
 
--   console.dir
+-   `console.dir`
 
     输出对象的内容
 
--   console.time, console.timeEnd
+-   `console.time`, `console.timeEnd`
 
     返回自开始计时后过去的时间
 
--   console.trace
+-   `console.trace`
 
     堆栈跟踪提供了程序逻辑中某点之前执行了哪些函数的信息。
 
