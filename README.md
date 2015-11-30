@@ -405,6 +405,81 @@ require 是Node中少数几个同步I/O操作之一。因为经常用到模块,�
 
     <http://en.wikipedia.org/wiki/Directory_traversal_attack>
 
+## 命令行工具
+
+-   创建 package.json
+
+    `npm init`
+
+    ```
+    {
+      "name": "node-command-line-tool",
+      "version": "1.0.0",
+      "description": "To make a node command line tool",
+      "main": "index.js",
+      "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+      },
+      "preferGlobal": "true",
+      "bin": {
+        "hit": "bin/hit.js"
+      },
+      "keywords": [
+        "command",
+        "line"
+      ],
+      "author": "modood",
+      "license": "ISC"
+    }
+    ```
+
+-   编写脚本代码
+
+    `npm install commander --save`
+    
+    创建 bin/hit.js 文件：
+
+    ```javascript
+    #!/usr/bin/env node
+    
+    var program = require('commander');
+    
+    program
+      .version('0.0.1')
+      .option('-p, --print', 'print Hello World')
+      .option('-s, --show', 'show github page')
+      .parse(process.argv);
+    
+    if (program.print) {
+      console.log('Hello World');
+    };
+    
+    if (program.show) {
+      console.log('https://github.com/modood');
+    };
+    
+    console.log('wow! you made it!');
+    ```
+
+-   完成
+
+    `sudo npm link`
+
+    本地创建链接文件测试效果
+
+    ```
+    $ hit -h
+    
+      Usage: hit [options]
+    
+      Options:
+    
+        -h, --help     output usage information
+        -V, --version  output the version number
+        -p, --print    print Hello World
+        -s, --show     show github page
+    ```      
+
 # 专业术语
 
 ## common.js
