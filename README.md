@@ -150,8 +150,6 @@
 
     <https://github.com/visionmedia/debug>
 
-## chrome-inspect
-
 ## node-debugger
 
 -   官方
@@ -188,6 +186,8 @@
 
     `node-debug app.js`
 
+## chrome-inspect
+
 # 测试
 
 ## 单元测试
@@ -208,22 +208,107 @@
 
     should.js
 
+## 自动测试
+
 ## 验收测试
 
 -   Tobi
 
 -   Soda
 
+# 全局对象和核心模块
+
+## process
+-   Exit Codes
+
+    Node.js will normally exit with a 0 status code when no more async operations 
+    are pending. 
+
+-   Event
+
+    `exit`: Emitted when the process is about to exit.
+
+    `message`: Messages sent by `ChildProcess.send()`
+
+    `beforeExit`
+
+    `uncaughtException`
+
+    `unhandledRejection`
+
+    `rejectionHandled`
+
+-   Signal Events
+
+    Emitted when the processes receives a signal. 
+
+    [a list of standard POSIX signal](http://wikipedia.org/wiki/Unix_signal#POSIX_sign)
+
+    for example：
+
+    An easy way to send the SIGINT signal is with Control-C in most terminal programs.
+
+    ``` JAVASCRIPT
+    // Start reading from stdin so we don't exit.
+    process.stdin.resume();
+
+    process.on('SIGINT', function() {
+      console.log('Got SIGINT.  Press Control-D to exit.');
+    });
+    ```
+
+## child_process
+
+-   Asynchronous Process Creation:
+
+    用 cp.exec() 缓冲命令结果: `child_process.exec(command[, options], callback)`
+
+    ``` JAVASCRIPT
+    var exec = require('child_process').exec,
+        child;
+
+    child = exec('cat *.js bad_file | wc -l',
+      function (error, stdout, stderr) {
+        console.log('stdout: ' + stdout);
+        console.log('stderr: ' + stderr);
+        if (error !== null) {
+          console.log('exec error: ' + error);
+        }
+    });
+    ```
+
+    用 cp.spawn() 繁衍带有流接口的命令: `child_process.spawn(command[, args][, options])`
+
+    这个函数跟 cp.exec() 不同，允许你跟每个子进程的 stdio 流交互
+
+    ``` JAVASCRIPT
+    var cp = require('child_process');
+    var child = cp.spawn('ls', [ '-l' ]);
+
+    // stdout is a regular Stream instance, which emits 'data','end', etc.
+    child.stdout.pipe(fs.createWriteStream('ls-result.txt'));
+
+    child.on('exit', function (code, signal) {
+      // emitted when the child process exits
+    });
+    ```
+
+    用 cp.fork() 分散工作负载: `child_process.fork(modulePath[, args][, options])`
+
+    cp.fork() 提供了 child.send() 和 child.on('message') 来向子进程发送和接受消息。
+    在子进程中,你可以用 process.send() 和 process.on('message') 向父进程发送和接受消息。
+
+-   Synchronous Process Creation：
+
+    `child_process.spawnSync(command[, args][, options])`
+
+    `child_process.execSync(command[, options])`
+
+-   child-process-promise
+
+    <https://github.com/patrick-steele-idem/child-process-promise>
+
 # 知识点
-
-## 关于 require 和同步I/O
-
--   require 是Node中少数几个同步I/O操作之一。因为经常用到模块,并且一般都是在文件
-    顶端引入,所以把 require 做成同步的有助于保持代码的整洁、有序,还能增强可读性。
-
--   但在程序中I/O密集的地方尽量不要用 require 。所有同步调用都会阻塞Node,直到调用完成才能
-    做其他事情。比如你正在运行一个HTTP服务器,如果在每个进入的请求上都用了 require ,
-    就会遇到性能问题。所以通常都只在程序最初加载时才使用 require 和其他同步操作。
 
 ## 异步编程
 
@@ -238,6 +323,62 @@
 -   事件监听
 
     事件监听器,本质上也是一个回调,不同的是,它跟一个概念实体(事件)相关联。用事件监听器响应重复性事件。
+
+-   关于 require 和同步I/O
+
+    require 是Node中少数几个同步I/O操作之一。因为经常用到模块,并且一般都是在文件
+    顶端引入,所以把 require 做成同步的有助于保持代码的整洁、有序,还能增强可读性。
+
+    但在程序中I/O密集的地方尽量不要用 require 。所有同步调用都会阻塞Node,直到调用完成才能
+    做其他事情。比如你正在运行一个HTTP服务器,如果在每个进入的请求上都用了 require ,
+    就会遇到性能问题。所以通常都只在程序最初加载时才使用 require 和其他同步操作。
+
+
+-   when require() is called
+
+    ```
+    require(X) from module at path Y
+    1. If X is a core module,
+       a. return the core module
+       b. STOP
+    2. If X begins with './' or '/' or '../'
+       a. LOAD_AS_FILE(Y + X)
+       b. LOAD_AS_DIRECTORY(Y + X)
+    3. LOAD_NODE_MODULES(X, dirname(Y))
+    4. THROW "not found"
+
+    LOAD_AS_FILE(X)
+    1. If X is a file, load X as JavaScript text.  STOP
+    2. If X.js is a file, load X.js as JavaScript text.  STOP
+    3. If X.json is a file, parse X.json to a JavaScript Object.  STOP
+    4. If X.node is a file, load X.node as binary addon.  STOP
+
+    LOAD_AS_DIRECTORY(X)
+    1. If X/package.json is a file,
+       a. Parse X/package.json, and look for "main" field.
+       b. let M = X + (json main field)
+       c. LOAD_AS_FILE(M)
+    2. If X/index.js is a file, load X/index.js as JavaScript text.  STOP
+    3. If X/index.json is a file, parse X/index.json to a JavaScript object. STOP
+    4. If X/index.node is a file, load X/index.node as binary addon.  STOP
+
+    LOAD_NODE_MODULES(X, START)
+    1. let DIRS=NODE_MODULES_PATHS(START)
+    2. for each DIR in DIRS:
+       a. LOAD_AS_FILE(DIR/X)
+       b. LOAD_AS_DIRECTORY(DIR/X)
+
+    NODE_MODULES_PATHS(START)
+    1. let PARTS = path split(START)
+    2. let I = count of PARTS - 1
+    3. let DIRS = []
+    4. while I >= 0,
+       a. if PARTS[I] = "node_modules" CONTINUE
+       c. DIR = path join(PARTS[0 .. I] + "node_modules")
+       b. DIRS = DIRS + DIR
+       c. let I = I - 1
+    5. return DIRS
+    ```
 
 ## 数据流和管道
 
@@ -266,422 +407,6 @@
 -   文章
 
     [虚拟座谈: 如何从JavaScript异步编程中活下来](http://mng.bz/wKnV)
-
-## 利用多核的优势
-
--   简介
-
-    现代的计算机CPU大多数都是多核的,但单个Node进程在运行时只能使用其中的一个内核。
-    为了让单个程序使用多核实现起来更容易,Node增加了集群(cluster)API。
-
--   示例
-
-    ``` JAVASCRIPT
-    var cluster = require('cluster');
-    var http = require('http');
-    var numCPUs = require('os').cpus().length;
-    var workers = {};
-    var requests = 0;
-    if (cluster.isMaster) {
-      for (var i = 0; i < numCPUs; i++) {
-        workers[i] = cluster.fork();
-        (function (i) {
-          workers[i].on('message', function(message) {
-            if (message.cmd == 'incrementRequestTotal') {
-              requests++;
-              for (var j = 0; j < numCPUs; j++) {
-                workers[j].send({
-                  cmd:
-                  'updateOfRequestTotal',
-                  requests: requests
-                });
-              }
-            }
-          });
-        })(i);
-      }
-      cluster.on('death', function(worker) {
-        console.log('Worker ' + worker.pid + ' died.');
-      });
-    } else {
-      process.on('message', function(message) {
-        if (message.cmd == 'updateOfRequestTotal') {
-          requests = message.requests;
-        }
-      });
-      http.Server(function(req, res) {
-        res.writeHead(200);
-        res.end('Worker ID ' + process.env.NODE_WORKER_ID
-        + ' says cluster has responded to ' + requests
-        + ' requests.');
-        process.send({cmd: 'incrementRequestTotal'});
-      }).listen(8000);
-    }
-    ```
-
-## HTTPS
-
--   简介
-    
-    安全的超文本传输协议，提供了一种保证 Web 会话私密性的方法。将 HTTP 和 TLS/SSL 传输层
-    结合到一起
-
--   私钥和公钥（证书）
-
-    私钥用来解密客户端发往服务器的数据
-
-    公钥（证书）用来加密从客户端发往服务器的数据
-
--   生成
-
-    生成私钥使用 OpenSSL： 
-
-    `openssl genrsa 1024 > key.pem`
-
-    生成公钥（证书）需要私钥：
-
-    `openssl req -x509 -new -key key.pem > key-cert.pem`
-
--   应用
-
-    ``` JAVASCRIPT
-    var https = require('https');
-    var fs = require('fs');
-    var options = {
-      key: fs.readFileSync('./key.pem'),
-      cert: fs.readFileSync('./key-cert.pem')
-    };
-    https.createServer(options, function (req, res) {
-      res.writeHead(200);
-      res.end("hello world\n");
-    }).listen(3000);
-    ```
-
--   目录遍历攻击
-
-    <http://en.wikipedia.org/wiki/Directory_traversal_attack>
-
-
-## cookie
-
--   基础
-
-    在HTML文档被发送之前，Web服务器通过传送HTTP 包头中的Set-Cookie 消息把一个cookie 发送到用户的浏览器中，如下示例：
-
-    ```
-    Set-Cookie: name=value; Path=/; expires=Wednesday, 09-Nov-99 23:12:40 GMT;
-    ```
-
-    其中比较重要的属性：
-
-    ```
-    name=value：键值对，可以设置要保存的 Key/Value，注意这里的 name 不能和其他属性项的名字一样
-    Expires： 过期时间（秒），在设置的某个时间点后该 Cookie 就会失效，如 expires=Wednesday, 09-Nov-99 23:12:40 GMT
-    maxAge： 最大失效时间（毫秒），设置在多少后失效
-    secure： 当 secure 值为 true 时，cookie 在 HTTP 中是无效，在 HTTPS 中才有效
-    Path： 表示 cookie 影响到的路径，如 path=/。如果路径不能匹配时，浏览器则不发送这个Cookie
-    httpOnly: 是微软对COOKIE做的扩展。如果在COOKIE中设置了“httpOnly”属性，则通过程序（JS脚本、applet等）将无法读取到COOKIE信息，防止XSS攻击产生
-    ```
-
--   node.js 中的 cookie
-
-    两个方案：
-
-    1.使用 `response.writeHead`
-
-    缺点：使用response.writeHead只能发送一次头部，即只能调用一次，且不能与response.render共存，否则会报错。
-
-    ```javascript
-    //设置过期时间为一分钟
-    var today = new Date();
-    var time = today.getTime() + 60*1000;
-    var time2 = new Date(time);
-    var timeObj = time2.toGMTString();
-    response.writeHead({
-       'Set-Cookie':'myCookie="type=ninja", "language=javascript";path="/";Expires='+timeObj+';httpOnly=true'
-    });
-    ```
-
-    2.使用 `response.cookie`
-
-    语法: `response.cookie('cookieName', 'name=value[name=value...]',[options]);`
-
-    ```javascript
-    response.cookie('haha', 'name1=value1&name2=value2', {maxAge:10*1000, path:'/', httpOnly:true});
-    ```
-
--   cookieParser
-
-    express 在 4.x 版本之后，管理session和cookies等许多模块都不再直接包含在express中， 而是需要单独下载安装相应模块。
-
-    `$ npm install cookie-parser`
-
-    使用示例：
-
-    ```javascript
-    var express      = require('express');
-    var cookieParser = require('cookie-parser');
-     
-    var app = express();
-    app.use(cookieParser());
-     
-    app.get('/', function (req, res) {
-        // 如果请求中的 cookie 存在 isVisit, 则输出 cookie
-        // 否则，设置 cookie 字段 isVisit, 并设置过期时间为1分钟
-        if (req.cookies.isVisit) {
-            console.log(req.cookies);
-            res.send("再次欢迎访问");
-        } else {
-            res.cookie('isVisit', 1, {maxAge: 60 * 1000});
-            res.send("欢迎第一次访问");
-        }
-    });
-    app.listen(80);
-    ```
-
-## session
-
--   简介
-
-    session是另一种记录客户状态的机制，不同的是Cookie保存在客户端浏览器中，而session保存在服务器上。
-
--   区别
-
-    cookie 和 session 的区别：
-
-    cookie数据存放在客户的浏览器上，session数据放在服务器上。
-
-    cookie不是很安全，别人可以分析存放在本地的COOKIE并进行COOKIE欺骗 考虑到安全应当使用session。
-
-    session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能 考虑到减轻服务器性能方面，应当使用COOKIE。
-
-    单个cookie保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie。
-
-    所以建议：将登陆信息等重要信息存放为session、其他信息如果需要保留，可以放在cookie中
-
--   express-session
-
-    安装：　`$ npm install express-session`
-
-    方法： `session(options)`，其中 options 中包含可选参数，主要有：
-
-    ```
-    name: 设置 cookie 中，保存 session 的字段名称，默认为 connect.sid 。
-    store: session 的存储方式，默认存放在内存中，也可以使用 redis，mongodb 等。express 生态中都有相应模块的支持。
-    secret: 通过设置的 secret 字符串，来计算 hash 值并放在 cookie 中，使产生的 signedCookie 防篡改。
-    cookie: 设置存放 session id 的 cookie 的相关选项，默认为 (default: { path: '/', httpOnly: true, secure: false, maxAge: null })
-    genid: 产生一个新的 session_id 时，所使用的函数， 默认使用 uid2 这个 npm 包。
-    rolling: 每个请求都重新设置一个 cookie，默认为 false。
-    resave: 即使 session 没有被修改，也保存 session 值，默认为 true。
-    ```
-    ```javascript
-    var express = require('express');
-    var session = require('express-session');
-    var app = express();
-     
-    app.use(session({
-        secret: 'hello', //secret的值建议使用128个随机字符串
-        cookie: {maxAge: 60 * 1000 * 30} // 过期时间（毫秒）
-    }));
-    app.get('/', function (req, res) {
-        if (req.session.sign) {//检查用户是否已经登录
-            console.log(req.session);//打印session的值
-            res.send('welecome <strong>' + req.session.name + '</strong>, 欢迎你再次登录');
-        } else {
-            req.session.sign = true;
-            req.session.name = 'Tom';
-            res.send('欢迎登陆！');
-        }
-    });
-    app.listen(80);
-    ```
-
--   基于 Redis 管理 Session
-
-    安装 
-
-    ```
-    $ npm install connect-redis
-    ```
-
-    参数
-
-    ```
-    client 你可以复用现有的redis客户端对象， 由 redis.createClient() 创建
-    host Redis服务器名
-    port Redis服务器端口
-    socket Redis服务器的unix_socket
-    ```
-
-    可选参数
-
-    ```
-    ttl Redis session TTL 过期时间 （秒）
-    disableTTL 禁用设置的 TTL
-    db 使用第几个数据库
-    pass Redis数据库的密码
-    prefix 数据表前辍即schema, 默认为 "sess:"
-    ```
-
-    req在经过session中间件的时候就会自动完成session的有效性验证、延期/重新颁发、以及对session中数据的获取了。
-
-    ```javascript
-    var express = require('express');
-    var session = require('express-session');
-    var RedisStore = require('connect-redis')(session);
-     
-    var app = express();
-    var options = {
-        "host": "127.0.0.1",
-        "port": "6379",
-        "ttl": 60 * 60 * 24 * 30,   //session的有效期为30天(秒)
-    };
-     
-    // 此时req对象还没有session这个属性
-    app.use(session({
-        store: new RedisStore(options),
-        secret: 'express is powerful'
-    }));
-     
-    app.listen(80);
-    ```
-
-
-## 命令行工具
-
--   创建 package.json
-
-    `npm init`
-
-    ```
-    {
-      "name": "node-command-line-tool",
-      "version": "1.0.0",
-      "description": "To make a node command line tool",
-      "main": "index.js",
-      "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-      },
-      "preferGlobal": "true",
-      "bin": {
-        "hit": "bin/hit.js"
-      },
-      "keywords": [
-        "command",
-        "line"
-      ],
-      "author": "modood",
-      "license": "ISC"
-    }
-    ```
-
--   编写脚本代码
-
-    `npm install commander --save`
-    
-    创建 bin/hit.js 文件：
-
-    ```javascript
-    #!/usr/bin/env node
-    
-    var program = require('commander');
-    
-    program
-      .version('0.0.1')
-      .option('-p, --print', 'print Hello World')
-      .option('-s, --show', 'show github page')
-      .parse(process.argv);
-    
-    if (program.print) {
-      console.log('Hello World');
-    };
-    
-    if (program.show) {
-      console.log('https://github.com/modood');
-    };
-    
-    console.log('wow! you made it!');
-    ```
-
--   完成
-
-    `sudo npm link`
-
-    本地创建链接文件测试效果
-
-    ```
-    $ hit -h
-    
-      Usage: hit [options]
-    
-      Options:
-    
-        -h, --help     output usage information
-        -V, --version  output the version number
-        -p, --print    print Hello World
-        -s, --show     show github page
-    ```      
-
-# 专业术语
-
-## CommonJS
-
--   简介
-
-    CommonJS是一种规范，NodeJS是这种规范的实现
-
--   官网
-
-    <http://www.commonjs.org/>
-
-## DIRT
-
--   简介
-
-    (data-intensive real-time)
-
-    数据密集型实时程序
-
--   示例： Browserling(<browserling.com>)
-
-    一个用Node开发的DIRT程序。在这个网站上,可以在浏览器中使用各种浏览器。
-    Browserling用了一个叫做StackVM的由Node驱动的项目,
-    而StackVM管理了用QEMU(快速模拟器)模拟器创建的虚拟机,
-    QEMU会模拟运行浏览器所需的CPU和外设。
-
--   示例： Testling(<testling.com>)
-
-    可以通过命令行在多个浏览器上并行运行测试包。
-
-## REPL
-
--   简介
-
-    （Read-Eval-Print-Loop）
-
-    一种交互式计算机编程环境
-
-## MIME
--   维基百科
-
-    <http://en.wikipedia.org/wiki/MIME> 
-
--   简介
-
-    通过HTTP提供文件时，要用正确的MIME类型设置HTTP头的 Content-Type 。
-
--   Node模块： mime
-
-## WebSocket
--   维基百科 
-
-    <http://en.wikipedia.org/wiki/WebSocket>
-
--   简介
-
-    一个为支持实时通讯而设计的轻量的双向通信协议。
-
--   Node模块： socket.io
 
 ## Promise
 
@@ -924,163 +649,520 @@
         这样在子版本变化过程中url的稳定的。变化有时是不可避免的，关键是如何管理变化。
         完整的文档和合理的时间表都会使得API使用者使用的更加轻松。
 
-# 全局对象
+## 利用多核的优势
 
-## process
--   Exit Codes
+-   简介
 
-    Node.js will normally exit with a 0 status code when no more async operations 
-    are pending. 
+    现代的计算机CPU大多数都是多核的,但单个Node进程在运行时只能使用其中的一个内核。
+    为了让单个程序使用多核实现起来更容易,Node增加了集群(cluster)API。
 
--   Event
-
-    `exit`: Emitted when the process is about to exit.
-
-    `message`: Messages sent by `ChildProcess.send()`
-
-    `beforeExit`
-
-    `uncaughtException`
-
-    `unhandledRejection`
-
-    `rejectionHandled`
-
--   Signal Events
-
-    Emitted when the processes receives a signal. 
-
-    [a list of standard POSIX signal](http://wikipedia.org/wiki/Unix_signal#POSIX_sign)
-
-    for example：
-
-    An easy way to send the SIGINT signal is with Control-C in most terminal programs.
+-   示例
 
     ``` JAVASCRIPT
-    // Start reading from stdin so we don't exit.
-    process.stdin.resume();
+    var cluster = require('cluster');
+    var http = require('http');
+    var numCPUs = require('os').cpus().length;
+    var workers = {};
+    var requests = 0;
+    if (cluster.isMaster) {
+      for (var i = 0; i < numCPUs; i++) {
+        workers[i] = cluster.fork();
+        (function (i) {
+          workers[i].on('message', function(message) {
+            if (message.cmd == 'incrementRequestTotal') {
+              requests++;
+              for (var j = 0; j < numCPUs; j++) {
+                workers[j].send({
+                  cmd:
+                  'updateOfRequestTotal',
+                  requests: requests
+                });
+              }
+            }
+          });
+        })(i);
+      }
+      cluster.on('death', function(worker) {
+        console.log('Worker ' + worker.pid + ' died.');
+      });
+    } else {
+      process.on('message', function(message) {
+        if (message.cmd == 'updateOfRequestTotal') {
+          requests = message.requests;
+        }
+      });
+      http.Server(function(req, res) {
+        res.writeHead(200);
+        res.end('Worker ID ' + process.env.NODE_WORKER_ID
+        + ' says cluster has responded to ' + requests
+        + ' requests.');
+        process.send({cmd: 'incrementRequestTotal'});
+      }).listen(8000);
+    }
+    ```
 
-    process.on('SIGINT', function() {
-      console.log('Got SIGINT.  Press Control-D to exit.');
+## HTTPS
+
+-   简介
+    
+    安全的超文本传输协议，提供了一种保证 Web 会话私密性的方法。将 HTTP 和 TLS/SSL 传输层
+    结合到一起
+
+-   私钥和公钥（证书）
+
+    私钥用来解密客户端发往服务器的数据
+
+    公钥（证书）用来加密从客户端发往服务器的数据
+
+-   生成
+
+    生成私钥使用 OpenSSL： 
+
+    `openssl genrsa 1024 > key.pem`
+
+    生成公钥（证书）需要私钥：
+
+    `openssl req -x509 -new -key key.pem > key-cert.pem`
+
+-   应用
+
+    ``` JAVASCRIPT
+    var https = require('https');
+    var fs = require('fs');
+    var options = {
+      key: fs.readFileSync('./key.pem'),
+      cert: fs.readFileSync('./key-cert.pem')
+    };
+    https.createServer(options, function (req, res) {
+      res.writeHead(200);
+      res.end("hello world\n");
+    }).listen(3000);
+    ```
+
+-   目录遍历攻击
+
+    <http://en.wikipedia.org/wiki/Directory_traversal_attack>
+
+
+## COOKIE
+
+-   基础
+
+    在HTML文档被发送之前，Web服务器通过传送HTTP 包头中的Set-Cookie 消息把一个cookie 发送到用户的浏览器中，如下示例：
+
+    ```
+    Set-Cookie: name=value; Path=/; expires=Wednesday, 09-Nov-99 23:12:40 GMT;
+    ```
+
+    其中比较重要的属性：
+
+    ```
+    name=value：键值对，可以设置要保存的 Key/Value，注意这里的 name 不能和其他属性项的名字一样
+    Expires： 过期时间（秒），在设置的某个时间点后该 Cookie 就会失效，如 expires=Wednesday, 09-Nov-99 23:12:40 GMT
+    maxAge： 最大失效时间（毫秒），设置在多少后失效
+    secure： 当 secure 值为 true 时，cookie 在 HTTP 中是无效，在 HTTPS 中才有效
+    Path： 表示 cookie 影响到的路径，如 path=/。如果路径不能匹配时，浏览器则不发送这个Cookie
+    httpOnly: 是微软对COOKIE做的扩展。如果在COOKIE中设置了“httpOnly”属性，则通过程序（JS脚本、applet等）将无法读取到COOKIE信息，防止XSS攻击产生
+    ```
+
+-   node.js 中的 cookie
+
+    两个方案：
+
+    1.使用 `response.writeHead`
+
+    缺点：使用response.writeHead只能发送一次头部，即只能调用一次，且不能与response.render共存，否则会报错。
+
+    ```javascript
+    //设置过期时间为一分钟
+    var today = new Date();
+    var time = today.getTime() + 60*1000;
+    var time2 = new Date(time);
+    var timeObj = time2.toGMTString();
+    response.writeHead({
+       'Set-Cookie':'myCookie="type=ninja", "language=javascript";path="/";Expires='+timeObj+';httpOnly=true'
     });
     ```
 
-## module
+    2.使用 `response.cookie`
 
--   module.exports & exports
+    语法: `response.cookie('cookieName', 'name=value[name=value...]',[options]);`
 
-    ``` JAVASCRIPT
-    var Currency = function(canadianDollar) {
-      this.canadianDollar = canadianDollar;
-    }
-    Currency.prototype.roundTwoDecimals = function(amount) {
-      return Math.round(amount * 100) / 100;
-    }
-    Currency.prototype.canadianToUS = function(canadian) {
-      return this.roundTwoDecimals(canadian * this.canadianDollar);
-    }
-    Currency.prototype.USToCanadian = function(us) {
-      return this.roundTwoDecimals(us / this.canadianDollar);
-    }
-    module.exports = Currency;
+    ```javascript
+    response.cookie('haha', 'name1=value1&name2=value2', {maxAge:10*1000, path:'/', httpOnly:true});
     ```
 
--   require
+-   cookieParser
 
-    when require() is called:
+    express 在 4.x 版本之后，管理session和cookies等许多模块都不再直接包含在express中， 而是需要单独下载安装相应模块。
 
-    ```
-    require(X) from module at path Y
-    1. If X is a core module,
-       a. return the core module
-       b. STOP
-    2. If X begins with './' or '/' or '../'
-       a. LOAD_AS_FILE(Y + X)
-       b. LOAD_AS_DIRECTORY(Y + X)
-    3. LOAD_NODE_MODULES(X, dirname(Y))
-    4. THROW "not found"
+    `$ npm install cookie-parser`
 
-    LOAD_AS_FILE(X)
-    1. If X is a file, load X as JavaScript text.  STOP
-    2. If X.js is a file, load X.js as JavaScript text.  STOP
-    3. If X.json is a file, parse X.json to a JavaScript Object.  STOP
-    4. If X.node is a file, load X.node as binary addon.  STOP
+    使用示例：
 
-    LOAD_AS_DIRECTORY(X)
-    1. If X/package.json is a file,
-       a. Parse X/package.json, and look for "main" field.
-       b. let M = X + (json main field)
-       c. LOAD_AS_FILE(M)
-    2. If X/index.js is a file, load X/index.js as JavaScript text.  STOP
-    3. If X/index.json is a file, parse X/index.json to a JavaScript object. STOP
-    4. If X/index.node is a file, load X/index.node as binary addon.  STOP
-
-    LOAD_NODE_MODULES(X, START)
-    1. let DIRS=NODE_MODULES_PATHS(START)
-    2. for each DIR in DIRS:
-       a. LOAD_AS_FILE(DIR/X)
-       b. LOAD_AS_DIRECTORY(DIR/X)
-
-    NODE_MODULES_PATHS(START)
-    1. let PARTS = path split(START)
-    2. let I = count of PARTS - 1
-    3. let DIRS = []
-    4. while I >= 0,
-       a. if PARTS[I] = "node_modules" CONTINUE
-       c. DIR = path join(PARTS[0 .. I] + "node_modules")
-       b. DIRS = DIRS + DIR
-       c. let I = I - 1
-    5. return DIRS
-    ```
-
-# 核心模块
-## child_process
-
--   Asynchronous Process Creation:
-
-    用 cp.exec() 缓冲命令结果: `child_process.exec(command[, options], callback)`
-
-    ``` JAVASCRIPT
-    var exec = require('child_process').exec,
-        child;
-
-    child = exec('cat *.js bad_file | wc -l',
-      function (error, stdout, stderr) {
-        console.log('stdout: ' + stdout);
-        console.log('stderr: ' + stderr);
-        if (error !== null) {
-          console.log('exec error: ' + error);
+    ```javascript
+    var express      = require('express');
+    var cookieParser = require('cookie-parser');
+     
+    var app = express();
+    app.use(cookieParser());
+     
+    app.get('/', function (req, res) {
+        // 如果请求中的 cookie 存在 isVisit, 则输出 cookie
+        // 否则，设置 cookie 字段 isVisit, 并设置过期时间为1分钟
+        if (req.cookies.isVisit) {
+            console.log(req.cookies);
+            res.send("再次欢迎访问");
+        } else {
+            res.cookie('isVisit', 1, {maxAge: 60 * 1000});
+            res.send("欢迎第一次访问");
         }
     });
+    app.listen(80);
     ```
 
-    用 cp.spawn() 繁衍带有流接口的命令: `child_process.spawn(command[, args][, options])`
+## SESSION
 
-    这个函数跟 cp.exec() 不同，允许你跟每个子进程的 stdio 流交互
+-   简介
 
-    ``` JAVASCRIPT
-    var cp = require('child_process');
-    var child = cp.spawn('ls', [ '-l' ]);
+    session是另一种记录客户状态的机制，不同的是Cookie保存在客户端浏览器中，而session保存在服务器上。
 
-    // stdout is a regular Stream instance, which emits 'data','end', etc.
-    child.stdout.pipe(fs.createWriteStream('ls-result.txt'));
+-   区别
 
-    child.on('exit', function (code, signal) {
-      // emitted when the child process exits
+    cookie 和 session 的区别：
+
+    cookie数据存放在客户的浏览器上，session数据放在服务器上。
+
+    cookie不是很安全，别人可以分析存放在本地的COOKIE并进行COOKIE欺骗 考虑到安全应当使用session。
+
+    session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能 考虑到减轻服务器性能方面，应当使用COOKIE。
+
+    单个cookie保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie。
+
+    所以建议：将登陆信息等重要信息存放为session、其他信息如果需要保留，可以放在cookie中
+
+-   express-session
+
+    安装：　`$ npm install express-session`
+
+    方法： `session(options)`，其中 options 中包含可选参数，主要有：
+
+    ```
+    name: 设置 cookie 中，保存 session 的字段名称，默认为 connect.sid 。
+    store: session 的存储方式，默认存放在内存中，也可以使用 redis，mongodb 等。express 生态中都有相应模块的支持。
+    secret: 通过设置的 secret 字符串，来计算 hash 值并放在 cookie 中，使产生的 signedCookie 防篡改。
+    cookie: 设置存放 session id 的 cookie 的相关选项，默认为 (default: { path: '/', httpOnly: true, secure: false, maxAge: null })
+    genid: 产生一个新的 session_id 时，所使用的函数， 默认使用 uid2 这个 npm 包。
+    rolling: 每个请求都重新设置一个 cookie，默认为 false。
+    resave: 即使 session 没有被修改，也保存 session 值，默认为 true。
+    ```
+    ```javascript
+    var express = require('express');
+    var session = require('express-session');
+    var app = express();
+     
+    app.use(session({
+        secret: 'hello', //secret的值建议使用128个随机字符串
+        cookie: {maxAge: 60 * 1000 * 30} // 过期时间（毫秒）
+    }));
+    app.get('/', function (req, res) {
+        if (req.session.sign) {//检查用户是否已经登录
+            console.log(req.session);//打印session的值
+            res.send('welecome <strong>' + req.session.name + '</strong>, 欢迎你再次登录');
+        } else {
+            req.session.sign = true;
+            req.session.name = 'Tom';
+            res.send('欢迎登陆！');
+        }
     });
+    app.listen(80);
     ```
 
-    用 cp.fork() 分散工作负载: `child_process.fork(modulePath[, args][, options])`
+-   基于 Redis 管理 Session
 
-    cp.fork() 提供了 child.send() 和 child.on('message') 来向子进程发送和接受消息。
-    在子进程中,你可以用 process.send() 和 process.on('message') 向父进程发送和接受消息。
+    安装 
 
--   Synchronous Process Creation：
+    ```
+    $ npm install connect-redis
+    ```
 
-    `child_process.spawnSync(command[, args][, options])`
+    参数
 
-    `child_process.execSync(command[, options])`
+    ```
+    client 你可以复用现有的redis客户端对象， 由 redis.createClient() 创建
+    host Redis服务器名
+    port Redis服务器端口
+    socket Redis服务器的unix_socket
+    ```
 
--   child-process-promise
+    可选参数
 
-    <https://github.com/patrick-steele-idem/child-process-promise>
+    ```
+    ttl Redis session TTL 过期时间 （秒）
+    disableTTL 禁用设置的 TTL
+    db 使用第几个数据库
+    pass Redis数据库的密码
+    prefix 数据表前辍即schema, 默认为 "sess:"
+    ```
+
+    req在经过session中间件的时候就会自动完成session的有效性验证、延期/重新颁发、以及对session中数据的获取了。
+
+    ```javascript
+    var express = require('express');
+    var session = require('express-session');
+    var RedisStore = require('connect-redis')(session);
+     
+    var app = express();
+    var options = {
+        "host": "127.0.0.1",
+        "port": "6379",
+        "ttl": 60 * 60 * 24 * 30,   //session的有效期为30天(秒)
+    };
+     
+    // 此时req对象还没有session这个属性
+    app.use(session({
+        store: new RedisStore(options),
+        secret: 'express is powerful'
+    }));
+     
+    app.listen(80);
+    ```
+
+## 加密密码
+
+-   bcrypt
+
+    bcrypt 是一个加盐的哈希函数，是专门用来对密码做哈希处理的第三方模块。
+
+    ```javascript
+    User.prototype.hashPassword = function (fn) {
+      var user = this;
+      bcrypt.genSalt(12, function (err, salt) {
+        if (err) return fn(err);
+        user.salt = salt;
+        bcrypt.hash(user.pass, salt, function (err, hash) {
+          if (err) return fn(err);
+          user.pass = hash;
+          fn();
+        })
+      })
+    }
+    ```
+    ```javascript
+    User.prototype.authenticate = function (name, pass, fn) {
+      User.getByName(name, function (err, user) {
+        if (err) return fn(err);
+        if (!user.id) return fn();
+        bcrypt.hash(pass, user.salt, function (err, hash) {
+          if (err) return fn(err);
+          if (hash === user.pass) return fn(null, user);
+          fn();
+        })
+      })
+    }
+    ```
+
+## 命令行工具
+
+-   创建 package.json
+
+    `npm init`
+
+    ```
+    {
+      "name": "node-command-line-tool",
+      "version": "1.0.0",
+      "description": "To make a node command line tool",
+      "main": "index.js",
+      "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+      },
+      "preferGlobal": "true",
+      "bin": {
+        "hit": "bin/hit.js"
+      },
+      "keywords": [
+        "command",
+        "line"
+      ],
+      "author": "modood",
+      "license": "ISC"
+    }
+    ```
+
+-   编写脚本代码
+
+    `npm install commander --save`
+    
+    创建 bin/hit.js 文件：
+
+    ```javascript
+    #!/usr/bin/env node
+    
+    var program = require('commander');
+    
+    program
+      .version('0.0.1')
+      .option('-p, --print', 'print Hello World')
+      .option('-s, --show', 'show github page')
+      .parse(process.argv);
+    
+    if (program.print) {
+      console.log('Hello World');
+    };
+    
+    if (program.show) {
+      console.log('https://github.com/modood');
+    };
+    
+    console.log('wow! you made it!');
+    ```
+
+-   完成
+
+    `sudo npm link`
+
+    本地创建链接文件测试效果
+
+    ```
+    $ hit -h
+    
+      Usage: hit [options]
+    
+      Options:
+    
+        -h, --help     output usage information
+        -V, --version  output the version number
+        -p, --print    print Hello World
+        -s, --show     show github page
+    ```
+
+## 中间件机制
+
+-   简介
+
+    在 Connect 中，中间件组件是一个 JavaScript 函数，它拦截 HTTP 服务器提供的请求和响应对象
+    按惯例会接受三个参数：一个请求对象，一个响应对象，还有一个通常命名为 next 的参数，它是一个回
+    调函数，表明这个组件已经完成了它的工作，可以执行下一个中间件组件了。
+
+-   注意
+
+    如果 next 不调用，控制权就不会被交回到分派器去调用下一个中间件组件，命令链中的后续中间件都不
+    会被调用，因此中间件的顺序也很重要。
+
+-   挂载
+
+    挂载可以给中间件或整个程序定义一个路径前缀。
+
+    ```javascript
+    connect()
+      .use(logger)
+      .use('/admin', restrict)
+      .listen(3000);
+    ```
+
+-   创建可配置的中间件
+
+    可配置的中间件可以传入额外的参数来改变它的行为
+
+    例如：可配置的 Connect 中间件组件 logger
+
+    ```javascript
+    function logger(format) {
+      var regexp = /:(\w+)/g;
+      return function (req, res, next) {
+        var str = format.replace(regexp, function(match, property){
+          return req[property];
+        });
+        console.log(str);
+        next();
+      }
+    }
+    module.exports = logger;
+    ```
+    ```
+    connect()
+      .use(logger(':method:url'))
+    ```
+
+-   错误处理中间件
+
+    错误处理中间件函数必须接受四个参数：err, req, res, next
+
+    ```javascript
+    function errorHandler() {
+      var env = process.env.NODE_ENV || 'development';
+      return function(err, req, res, next) {
+        res.statusCode = 500;
+        switch (env) {
+          case 'development':
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(err));
+            break;
+          default:
+            res.end('Server error');
+        }
+      }
+    }
+    ```
+
+# 专业术语
+
+## CommonJS
+
+-   简介
+
+    CommonJS是一种规范，NodeJS是这种规范的实现
+
+-   官网
+
+    <http://www.commonjs.org/>
+
+## DIRT
+
+-   简介
+
+    (data-intensive real-time)
+
+    数据密集型实时程序
+
+-   示例： Browserling(<browserling.com>)
+
+    一个用Node开发的DIRT程序。在这个网站上,可以在浏览器中使用各种浏览器。
+    Browserling用了一个叫做StackVM的由Node驱动的项目,
+    而StackVM管理了用QEMU(快速模拟器)模拟器创建的虚拟机,
+    QEMU会模拟运行浏览器所需的CPU和外设。
+
+-   示例： Testling(<testling.com>)
+
+    可以通过命令行在多个浏览器上并行运行测试包。
+
+## REPL
+
+-   简介
+
+    （Read-Eval-Print-Loop）
+
+    一种交互式计算机编程环境
+
+## MIME
+-   维基百科
+
+    <http://en.wikipedia.org/wiki/MIME> 
+
+-   简介
+
+    通过HTTP提供文件时，要用正确的MIME类型设置HTTP头的 Content-Type 。
+
+-   Node模块： mime
+
+## WebSocket
+-   维基百科 
+
+    <http://en.wikipedia.org/wiki/WebSocket>
+
+-   简介
+
+    一个为支持实时通讯而设计的轻量的双向通信协议。
+
+-   Node模块： socket.io
