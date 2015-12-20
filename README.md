@@ -1,4 +1,4 @@
-# 安装
+# 基础
 
 ## node
 
@@ -33,45 +33,127 @@
 
 ## npm
 
--   寻找包
+-   简介
     
-    `npm search`
+    NPM的全称是Node Package Manager，是一个NodeJS包管理和分发工具，已经成为了非官方的发
+    布Node模块（包）的标准。
 
--   查看包
+-   配置文件
 
-    `npm view`
+    `package.json`
 
--   安装包
+-   常用命令
+    
+    ```
+    npm search                      寻找包
+    npm view                        查看包
+    npm install [-g]                安装包
+    npm docs                        包文档
+    npm explore [-g]                包源码
+    npm adduser                     添加用户信息
+    npm link                        链接包
+    npm unlink                      取消链接包
+    npm publish                     发布包
+    npm unpublish                   取消发布包
+    ```
 
-    `npm install [-g]`
+## Bower
 
--   包文档
+-   简介
 
-    `npm docs`
+    Bower是一个客户端技术的软件包管理器，它可用于搜索、安装和卸载如JavaScript、HTML、CSS之类
+    的网络资源。其他一些建立在Bower基础之上的开发工具，如YeoMan和Grunt。
 
--   包源码
+-   安装
 
-    `npm explore [-g]`
+    `npm install -g bower`
 
--   添加用户信息
+-   配置文件
 
-    `npm adduser`
+    `bower.json`
 
--   链接包
+-   常用命令
 
-    `npm link`
+    ```
+    bower init                      创建bower.json文件
+    bower install [--save]          包的安装
+    bower list                      所有包的列表
+    bower search                    包的搜索
+    bower info                      特定的包的信息
+    bower uninstall                 包的卸载
+    ```
 
--   取消链接包
+## grunt
 
-    `npm unlink`
+-   简介
 
--   发布包
+    Grunt是基于Node.js的项目构建工具。它可以自动运行你所设定的任务。
 
-    `npm publish`
+-   安装
 
--   取消发布包
+    `npm install -g grunt-cli`
 
-    `npm unpublish`
+-   配置文件
+
+    `Gruntfile.js` `package.json`
+
+## gulp
+
+-   简介
+
+    Gulp.js 是一个自动化构建工具,开发者可以使用它在项目开发过程中自动执行常见任务。
+
+-   安装
+
+    `npm install -g gulp`
+
+-   配置文件
+
+    `gulpfile.js`
+
+## yeoman
+
+-   简介
+
+    Yeoman是Google的团队和外部贡献者团队合作开发的，他的目标是通过Grunt（一个用于开发任务自动
+    化的命令行工具）和Bower（一个HTML、CSS、Javascript和图片等前端资源的包管理器）的包装为
+    开发者创建一个易用的工作流。
+
+    Yeoman的目的不仅是要为新项目建立工作流，同时还是为了解决前端开发所面临的诸多严重问题，例如
+    零散的依赖关系。
+
+    Yeoman主要有三部分组成：yo（脚手架工具）、grunt（构建工具）、bower（包管理器）。这三个工
+    具是分别独立开发的，但是需要配合使用，来实现我们高效的工作流模式。
+
+-   官网
+
+    <https://github.com/yeoman/yo>
+
+## pm2
+-   简介
+
+    pm2 是一个带有负载均衡功能的Node应用的进程管理器.
+
+-   详细
+
+    <http://www.oschina.net/translate/goodbye-node-forever-hello-pm2?cmp>
+
+-   安装
+
+    `npm install -g pm2`
+
+-   常用命令
+
+    ```
+    pm2 start <app_name|id|all>     启动程序
+    pm2 list                        列举进程
+    pm2 stop <app_name|id|all>      退出程序
+    pm2 restart                     重启应用
+    pm2 describe id|all             程序信息
+    pm2 monit                       监控
+    pm2 logs                        实时集中log处理
+    pm2 web                         API(端口：9615 ) 
+    ```
 
 # 调试
 
@@ -190,31 +272,31 @@
 
 # 测试
 
-## 单元测试
+## 概述
 
--   测试驱动开发(TDD)
+-   分类
 
-    assert
+    软件开发测试分类：
 
-    nodeunit
+    <http://www.douban.com/note/89359502/>
 
-    Mocha
+    Node.js 测试相关：
 
--   行为驱动开发(BDD)
+    <https://github.com/nodejs/node-v0.x-archive/wiki/modules#testing>
 
-    Mocha
+    单元测试：
 
-    Vows
+    ```
+    测试驱动开发(TDD)： assert, nodeunit, Mocha, chai
+    行为驱动开发(BDD)： Mocha, chai, Vows, should.js
+    ```
 
-    should.js
+    测试覆盖率:
+    ```
+    istanbul
+    ```
 
-## 自动测试
-
-## 验收测试
-
--   Tobi
-
--   Soda
+## mocha
 
 # 全局对象和核心模块
 
@@ -1101,6 +1183,57 @@
             break;
           default:
             res.end('Server error');
+        }
+      }
+    }
+    ```
+
+## nginx
+
+-   简介
+
+    尽管Node在提供动态内容服务时很高效,但在提供图片、 CSS样式表或客户端JavaScript等静
+    态文件服务时并不是最有效的办法。
+
+    通过HTTP提供静态文件的服务应该交给专门针对这个特定任务优化过的特定软件项目,
+    因为它们多年以来主要专注于这项任务。
+
+    Nginx (http://nginx.org/en/) 是一个专门针对静态文件服务做过优化的开源Web服务器,很容
+    易设置成跟Node一起提供那些文件服务。在典型的Nginx/Node配置中,一般由Nginx先处理所有
+    Web请求,再将非静态文件的请求转给Node。
+
+-   安装
+
+    `sudo apt-get install nginx`
+
+-   配置文件
+
+    `/etc/nginx/nginx.conf`
+
+-   配置选项
+
+    ```
+    http {
+      upstream my_node_app {
+        server 127.0.0.1:8000;
+      }
+      server {
+        listen 80;
+        server_name localhost domain.com;
+        access_log /var/log/nginx/my_node_app.log;
+        location ~ /static/ {
+          root /home/node/my_node_app;
+          if (!-f $request_filename) {
+            return 404;
+          }
+        }
+        location / {
+          proxy_pass http://my_node_app;
+          proxy_redirect off;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header Host $http_host;
+          proxy_set_header X-NginX-Proxy true;
         }
       }
     }
