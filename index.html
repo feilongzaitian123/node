@@ -1,0 +1,1133 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>i5ting_ztree_toc:node</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<h1 id="-">基础</h1>
+<h2 id="node">node</h2>
+<ul>
+<li><p>使用 Homebrew 安装 node （OS X）</p>
+<pre><code>ruby -e &quot;$(curl -fsSkL raw.github.com/mxcl/homebrew/go)&quot;
+brew install node
+</code></pre></li>
+<li><p>使用 nvm 安装 node  </p>
+<pre><code>wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.27.0/install.sh | bash
+nvm install 0.10.38
+nvm use 0.10.38 --default
+</code></pre></li>
+<li><p>源码编译</p>
+<pre><code>sudo apt-get install build-essential libssl-dev
+
+curl -O http://nodejs.org/dist/node-latest.tar.gz
+tar zxvf node-latest.tar.gz
+cd node-v*
+./configure
+make
+sudo make install
+node -v
+</code></pre></li>
+</ul>
+<h2 id="npm">npm</h2>
+<ul>
+<li><p>简介</p>
+<p>NPM的全称是Node Package Manager，是一个NodeJS包管理和分发工具，已经成为了非官方的发
+布Node模块（包）的标准。</p>
+</li>
+<li><p>配置文件</p>
+<p><code>package.json</code></p>
+</li>
+<li><p>常用命令</p>
+<pre><code>npm search                      寻找包
+npm view                        查看包
+npm install [-g]                安装包
+npm docs                        包文档
+npm explore [-g]                包源码
+npm adduser                     添加用户信息
+npm link                        链接包
+npm unlink                      取消链接包
+npm publish                     发布包
+npm unpublish                   取消发布包
+</code></pre></li>
+</ul>
+<h2 id="bower">Bower</h2>
+<ul>
+<li><p>简介</p>
+<p>Bower是一个客户端技术的软件包管理器，它可用于搜索、安装和卸载如JavaScript、HTML、CSS之类
+的网络资源。其他一些建立在Bower基础之上的开发工具，如YeoMan和Grunt。</p>
+</li>
+<li><p>安装</p>
+<p><code>npm install -g bower</code></p>
+</li>
+<li><p>配置文件</p>
+<p><code>bower.json</code></p>
+</li>
+<li><p>常用命令</p>
+<pre><code>bower init                      创建bower.json文件
+bower install [--save]          包的安装
+bower list                      所有包的列表
+bower search                    包的搜索
+bower info                      特定的包的信息
+bower uninstall                 包的卸载
+</code></pre></li>
+</ul>
+<h2 id="grunt">grunt</h2>
+<ul>
+<li><p>简介</p>
+<p>Grunt是基于Node.js的项目构建工具。它可以自动运行你所设定的任务。</p>
+</li>
+<li><p>安装</p>
+<p><code>npm install -g grunt-cli</code></p>
+</li>
+<li><p>配置文件</p>
+<p><code>Gruntfile.js</code> <code>package.json</code></p>
+</li>
+</ul>
+<h2 id="gulp">gulp</h2>
+<ul>
+<li><p>简介</p>
+<p>Gulp.js 是一个自动化构建工具,开发者可以使用它在项目开发过程中自动执行常见任务。</p>
+</li>
+<li><p>安装</p>
+<p><code>npm install -g gulp</code></p>
+</li>
+<li><p>配置文件</p>
+<p><code>gulpfile.js</code></p>
+</li>
+</ul>
+<h2 id="yeoman">yeoman</h2>
+<ul>
+<li><p>简介</p>
+<p>Yeoman是Google的团队和外部贡献者团队合作开发的，他的目标是通过Grunt（一个用于开发任务自动
+化的命令行工具）和Bower（一个HTML、CSS、Javascript和图片等前端资源的包管理器）的包装为
+开发者创建一个易用的工作流。</p>
+<p>Yeoman的目的不仅是要为新项目建立工作流，同时还是为了解决前端开发所面临的诸多严重问题，例如
+零散的依赖关系。</p>
+<p>Yeoman主要有三部分组成：yo（脚手架工具）、grunt（构建工具）、bower（包管理器）。这三个工
+具是分别独立开发的，但是需要配合使用，来实现我们高效的工作流模式。</p>
+</li>
+<li><p>官网</p>
+<p><a href="https://github.com/yeoman/yo">https://github.com/yeoman/yo</a></p>
+</li>
+</ul>
+<h2 id="pm2">pm2</h2>
+<ul>
+<li><p>简介</p>
+<p>pm2 是一个带有负载均衡功能的Node应用的进程管理器.</p>
+</li>
+<li><p>详细</p>
+<p><a href="http://www.oschina.net/translate/goodbye-node-forever-hello-pm2?cmp">http://www.oschina.net/translate/goodbye-node-forever-hello-pm2?cmp</a></p>
+</li>
+<li><p>安装</p>
+<p><code>npm install -g pm2</code></p>
+</li>
+<li><p>常用命令</p>
+<pre><code>pm2 start &lt;app_name|id|all&gt;     启动程序
+pm2 list                        列举进程
+pm2 stop &lt;app_name|id|all&gt;      退出程序
+pm2 restart                     重启应用
+pm2 describe id|all             程序信息
+pm2 monit                       监控
+pm2 logs                        实时集中log处理
+pm2 web                         API(端口：9615 )
+</code></pre></li>
+</ul>
+<h1 id="-">调试</h1>
+<h2 id="-">代码检查</h2>
+<ul>
+<li><p><code>JSLint</code></p>
+<p>JSLint是一个JavaScript验证工具（非开源），可以扫描JavaScript源代码来查找问题。</p>
+</li>
+<li><p><code>JSHint</code></p>
+<p>JSHint是基于JSLint的项目,JSLint是一个存在了十多年的JavaScript源码分析工具。然而
+JSLint的可配置性不太强,因此促生了JSHint。</p>
+<p><a href="https://github.com/jshint/jshint">https://github.com/jshint/jshint</a></p>
+<p><a href="https://github.com/jshint/node-jshint">https://github.com/jshint/node-jshint</a></p>
+<pre><code>npm install -g jshint
+jshint my_app.js
+</code></pre></li>
+<li><p><code>JSCritic</code>    </p>
+<p>JSCritic 是一个 JavaScript 代码质量检测工具。该工具使用 JSHint 进行检查代码质量，同时提供一个在线的版本。</p>
+<p><a href="https://github.com/kangax/jscritic">https://github.com/kangax/jscritic</a></p>
+</li>
+<li><p><code>node-jscs</code></p>
+<p>node-jscs 是一个 JavaScript 的代码风格检查工具。可在 Node.js 和浏览器中使用</p>
+<p><a href="https://github.com/jscs-dev/node-jscs">https://github.com/jscs-dev/node-jscs</a></p>
+</li>
+</ul>
+<h2 id="-">调试输出</h2>
+<ul>
+<li><p><code>console.log</code></p>
+<p>用来向标准输出中输出程序的状态信息</p>
+<p>console.info 是同一函数的另一个名称。</p>
+<p>可以给出 printf() 风格的参数，如： <code>console.log(&#39;Counter: %d&#39;, counter);</code></p>
+</li>
+<li><p><code>console.warn</code>, <code>console.error</code></p>
+<p>而输出警告和错误信息的 console.warn 和 console.error 函数也差不多。唯一的区别是
+它们不是显示到标准输出中,而是显示到标准错误中。</p>
+</li>
+<li><p><code>console.dir</code></p>
+<p>输出对象的内容</p>
+</li>
+<li><p><code>console.time</code>, <code>console.timeEnd</code></p>
+<p>返回自开始计时后过去的时间</p>
+</li>
+<li><p><code>console.trace</code></p>
+<p>堆栈跟踪提供了程序逻辑中某点之前执行了哪些函数的信息。</p>
+<p>输出的堆栈跟踪如下例所示：</p>
+<pre><code>Trace:
+    at lastFunction (/Users/mike/tmp/app.js:12:11)
+    at secondFunction (/Users/mike/tmp/app.js:8:3)
+    at firstFunction (/Users/mike/tmp/app.js:4:3)
+    at Object.&lt;anonymous&gt; (/Users/mike/tmp/app.js:15:3)
+</code></pre><p>注意,堆栈跟踪中的执行顺序是按时间倒序显示的。</p>
+</li>
+<li><p>使用 debug 管理调试输出</p>
+<p><a href="https://github.com/visionmedia/debug">https://github.com/visionmedia/debug</a></p>
+</li>
+</ul>
+<h2 id="node-debugger">node-debugger</h2>
+<ul>
+<li><p>官方</p>
+<p><a href="https://nodejs.org/api/debugger.html">https://nodejs.org/api/debugger.html</a></p>
+</li>
+<li><p>启动</p>
+<p><code>node debug server.js</code></p>
+</li>
+<li><p>断点</p>
+<p><code>debugger;</code> 在程序中设置断点</p>
+<p><code>setBreakpoint() (sb())</code> 在调试器中设置断点</p>
+<p><code>clearBreakpoint() (cb())</code> 在调试器中取消断点</p>
+</li>
+<li><p>更多</p>
+<p><a href="http://i5ting.github.io/node-debug-tutorial/">http://i5ting.github.io/node-debug-tutorial/</a></p>
+</li>
+</ul>
+<h2 id="node-inspector">node-inspector</h2>
+<ul>
+<li><p>官方</p>
+<p><a href="https://github.com/node-inspector/node-inspector">https://github.com/node-inspector/node-inspector</a></p>
+</li>
+<li><p>安装</p>
+<p><code>npm install -g node-inspector</code></p>
+</li>
+<li><p>启动</p>
+<p><code>node-debug app.js</code></p>
+</li>
+</ul>
+<h2 id="chrome-inspect">chrome-inspect</h2>
+<h1 id="-">测试</h1>
+<h2 id="-">概述</h2>
+<ul>
+<li><p>分类</p>
+<p>软件开发测试分类：</p>
+<p><a href="http://www.douban.com/note/89359502/">http://www.douban.com/note/89359502/</a></p>
+<p>Node.js 测试相关：</p>
+<p><a href="https://github.com/nodejs/node-v0.x-archive/wiki/modules#testing">https://github.com/nodejs/node-v0.x-archive/wiki/modules#testing</a></p>
+<p>单元测试：</p>
+<pre><code>测试驱动开发(TDD)： assert, nodeunit, Mocha, chai
+行为驱动开发(BDD)： Mocha, chai, Vows, should.js
+</code></pre><p>测试覆盖率:</p>
+<pre><code>istanbul
+</code></pre></li>
+</ul>
+<h2 id="mocha">mocha</h2>
+<h1 id="-">全局对象和核心模块</h1>
+<h2 id="process">process</h2>
+<ul>
+<li><p>Exit Codes</p>
+<p>Node.js will normally exit with a 0 status code when no more async operations 
+are pending. </p>
+</li>
+<li><p>Event</p>
+<p><code>exit</code>: Emitted when the process is about to exit.</p>
+<p><code>message</code>: Messages sent by <code>ChildProcess.send()</code></p>
+<p><code>beforeExit</code></p>
+<p><code>uncaughtException</code></p>
+<p><code>unhandledRejection</code></p>
+<p><code>rejectionHandled</code></p>
+</li>
+<li><p>Signal Events</p>
+<p>Emitted when the processes receives a signal. </p>
+<p><a href="http://wikipedia.org/wiki/Unix_signal#POSIX_sign">a list of standard POSIX signal</a></p>
+<p>for example：</p>
+<p>An easy way to send the SIGINT signal is with Control-C in most terminal programs.</p>
+<pre><code class="lang-JAVASCRIPT">// Start reading from stdin so we don&#39;t exit.
+process.stdin.resume();
+
+process.on(&#39;SIGINT&#39;, function() {
+  console.log(&#39;Got SIGINT.  Press Control-D to exit.&#39;);
+});
+</code></pre>
+</li>
+</ul>
+<h2 id="child_process">child_process</h2>
+<ul>
+<li><p>Asynchronous Process Creation:</p>
+<p>用 cp.exec() 缓冲命令结果: <code>child_process.exec(command[, options], callback)</code></p>
+<pre><code class="lang-JAVASCRIPT">var exec = require(&#39;child_process&#39;).exec,
+    child;
+
+child = exec(&#39;cat *.js bad_file | wc -l&#39;,
+  function (error, stdout, stderr) {
+    console.log(&#39;stdout: &#39; + stdout);
+    console.log(&#39;stderr: &#39; + stderr);
+    if (error !== null) {
+      console.log(&#39;exec error: &#39; + error);
+    }
+});
+</code></pre>
+<p>用 cp.spawn() 繁衍带有流接口的命令: <code>child_process.spawn(command[, args][, options])</code></p>
+<p>这个函数跟 cp.exec() 不同，允许你跟每个子进程的 stdio 流交互</p>
+<pre><code class="lang-JAVASCRIPT">var cp = require(&#39;child_process&#39;);
+var child = cp.spawn(&#39;ls&#39;, [ &#39;-l&#39; ]);
+
+// stdout is a regular Stream instance, which emits &#39;data&#39;,&#39;end&#39;, etc.
+child.stdout.pipe(fs.createWriteStream(&#39;ls-result.txt&#39;));
+
+child.on(&#39;exit&#39;, function (code, signal) {
+  // emitted when the child process exits
+});
+</code></pre>
+<p>用 cp.fork() 分散工作负载: <code>child_process.fork(modulePath[, args][, options])</code></p>
+<p>cp.fork() 提供了 child.send() 和 child.on(&#39;message&#39;) 来向子进程发送和接受消息。
+在子进程中,你可以用 process.send() 和 process.on(&#39;message&#39;) 向父进程发送和接受消息。</p>
+</li>
+<li><p>Synchronous Process Creation：</p>
+<p><code>child_process.spawnSync(command[, args][, options])</code></p>
+<p><code>child_process.execSync(command[, options])</code></p>
+</li>
+<li><p>child-process-promise</p>
+<p><a href="https://github.com/patrick-steele-idem/child-process-promise">https://github.com/patrick-steele-idem/child-process-promise</a></p>
+</li>
+</ul>
+<h1 id="-">知识点</h1>
+<h2 id="-">异步编程</h2>
+<ul>
+<li><p>简介</p>
+<p>在Node的世界里流行两种响应逻辑管理方式:<code>回调</code>和<code>事件监听</code>。</p>
+</li>
+<li><p>回调</p>
+<p>回调通常用来定义一次性响应的逻辑。</p>
+</li>
+<li><p>事件监听</p>
+<p>事件监听器,本质上也是一个回调,不同的是,它跟一个概念实体(事件)相关联。用事件监听器响应重复性事件。</p>
+</li>
+<li><p>关于 require 和同步I/O</p>
+<p>require 是Node中少数几个同步I/O操作之一。因为经常用到模块,并且一般都是在文件
+顶端引入,所以把 require 做成同步的有助于保持代码的整洁、有序,还能增强可读性。</p>
+<p>但在程序中I/O密集的地方尽量不要用 require 。所有同步调用都会阻塞Node,直到调用完成才能
+做其他事情。比如你正在运行一个HTTP服务器,如果在每个进入的请求上都用了 require ,
+就会遇到性能问题。所以通常都只在程序最初加载时才使用 require 和其他同步操作。</p>
+</li>
+</ul>
+<ul>
+<li><p>when require() is called</p>
+<pre><code>require(X) from module at path Y
+1. If X is a core module,
+   a. return the core module
+   b. STOP
+2. If X begins with &#39;./&#39; or &#39;/&#39; or &#39;../&#39;
+   a. LOAD_AS_FILE(Y + X)
+   b. LOAD_AS_DIRECTORY(Y + X)
+3. LOAD_NODE_MODULES(X, dirname(Y))
+4. THROW &quot;not found&quot;
+
+LOAD_AS_FILE(X)
+1. If X is a file, load X as JavaScript text.  STOP
+2. If X.js is a file, load X.js as JavaScript text.  STOP
+3. If X.json is a file, parse X.json to a JavaScript Object.  STOP
+4. If X.node is a file, load X.node as binary addon.  STOP
+
+LOAD_AS_DIRECTORY(X)
+1. If X/package.json is a file,
+   a. Parse X/package.json, and look for &quot;main&quot; field.
+   b. let M = X + (json main field)
+   c. LOAD_AS_FILE(M)
+2. If X/index.js is a file, load X/index.js as JavaScript text.  STOP
+3. If X/index.json is a file, parse X/index.json to a JavaScript object. STOP
+4. If X/index.node is a file, load X/index.node as binary addon.  STOP
+
+LOAD_NODE_MODULES(X, START)
+1. let DIRS=NODE_MODULES_PATHS(START)
+2. for each DIR in DIRS:
+   a. LOAD_AS_FILE(DIR/X)
+   b. LOAD_AS_DIRECTORY(DIR/X)
+
+NODE_MODULES_PATHS(START)
+1. let PARTS = path split(START)
+2. let I = count of PARTS - 1
+3. let DIRS = []
+4. while I &gt;= 0,
+   a. if PARTS[I] = &quot;node_modules&quot; CONTINUE
+   c. DIR = path join(PARTS[0 .. I] + &quot;node_modules&quot;)
+   b. DIRS = DIRS + DIR
+   c. let I = I - 1
+5. return DIRS
+</code></pre></li>
+</ul>
+<h2 id="-">数据流和管道</h2>
+<ul>
+<li><p>详细</p>
+<p><a href="https://github.com/substack/stream-handbook">https://github.com/substack/stream-handbook</a></p>
+</li>
+<li><p>语法</p>
+<p><code>ReadableStream.pipe(WritableStream);</code></p>
+</li>
+<li><p>示例</p>
+<pre><code class="lang-JAVASCRIPT">var readStream = fs.createReadStream(&#39;./original.txt&#39;)
+var writeStream = fs.createWriteStream(&#39;./copy.txt&#39;)
+readStream.pipe(writeStream);
+</code></pre>
+</li>
+</ul>
+<h2 id="-">流程控制</h2>
+<ul>
+<li><p>工具</p>
+<p>Nimble、Step、Seq</p>
+</li>
+<li><p>文章</p>
+<p><a href="http://mng.bz/wKnV">虚拟座谈: 如何从JavaScript异步编程中活下来</a></p>
+</li>
+</ul>
+<h2 id="promise">Promise</h2>
+<ul>
+<li><p>参考资料：</p>
+<p><a href="http://nodeonly.com/nodesang/#/5">http://nodeonly.com/nodesang/#/5</a></p>
+<p><a href="https://github.com/promises-aplus/promises-spec">https://github.com/promises-aplus/promises-spec</a></p>
+<p><a href="https://github.com/petkaantonov/bluebird">https://github.com/petkaantonov/bluebird</a></p>
+<p><a href="http://www.cnblogs.com/1000/p/getting-started-with-promises.html">http://www.cnblogs.com/1000/p/getting-started-with-promises.html</a></p>
+<p><a href="http://www.cnblogs.com/1000/p/3847745.html">http://www.cnblogs.com/1000/p/3847745.html</a></p>
+</li>
+</ul>
+<ul>
+<li><p>初识Promises</p>
+<p>Promises是什么:</p>
+<p>Promises象征着一个异步操作的最终结果。Promises交互主要通过它的then方法，
+then方法接受一个回调函数，这个回调函数接受执行成功的返回值或执行失败的错误原因，
+错误原因一般是Error对象。需要注意的是，then方法执行的返回值是一个Promise对象，
+而then方法接受的回调函数的返回值则可以是任意的JavaScript对象，包括Promises。
+基于这种机制，Promise对象的链式调用就起作用了。</p>
+<p>Promises的状态:</p>
+<p>Promise对象有三种状态：pending（初始状态）、fulfilled（成功执行）、rejected（执行出错）。
+pending状态的Promise对象可以转换到其它两种状态。</p>
+</li>
+<li><p>使用Promise进行错误处理</p>
+<p>异步模式中的错误处理:</p>
+<pre><code class="lang-javascript">fs.readFile(&#39;file.json&#39;, &#39;utf8&#39;, function(err, data){
+    if(err){
+        console.error(&quot;无法读取文件&quot;)
+    }else{
+        try{
+            var json = JSON.parese(data)
+        }catch(e){
+            console.error(&quot;不符合json格式&quot;);
+        }
+    }
+})
+</code></pre>
+<p>假设fs.readFileAsync是fs.readFile的Promise版本，这意味着：</p>
+<p>fs.readFileAsync方法的返回结果是一个Promise对象
+fs.readFileAsync方法的返回结果拥有一个then方法
+fs.readFileAsync方法接受参数与fs.readFile一致，除了最后一个回调函数</p>
+<p>返回Promise对象意味着，执行fs.readFileAsync并不会立即执行异步操作，
+而是通过调用其then方法来执行，then方法接受的回调函数用于处理正确返回结果。
+所以使用fs.readFileAsync的使用方式如下：</p>
+<pre><code>//Promise版本
+fs.readFileAsync(&#39;file.json&#39;, &#39;utf8&#39;)
+.then(function(data){
+  console.log(data)
+})
+</code></pre><p>由于Promises/A+标准对Promise对象只规定了唯一的then方法，没有专门
+针对catch或者error的方法，我们将继续使用bluebird。</p>
+<pre><code class="lang-javascript">// 带错误处理的Promise版本
+fs.readFileAsync(&#39;file.json&#39;, &#39;utf8&#39;)
+.then(function(data){
+  console.log(data)
+})
+.catch(SyntaxError, function(e){
+  //code here
+})
+.catch(function(e){
+  //code here
+})
+</code></pre>
+</li>
+<li><p>Promisify</p>
+<p>使用bluebird如何对fs.readFileAsync方法进行promisify：</p>
+<pre><code class="lang-javascript">var Promise = require(&#39;bluebird&#39;)
+fs.readFileAsync = Promise.promisify(fs.readFie, fs)
+</code></pre>
+<p>对于bluebird它还有一个更强大的方法，那就是promisify的高级版本 promisifyAll，比如：</p>
+<pre><code class="lang-javascript">var Promise = require(&#39;bluebird&#39;)
+Promise.promisifyAll(fs)
+</code></pre>
+<p>行完上面的代码之后，fs对象下所有的异步方法都会对应的生成一个Promise版本方法，
+比如fs.readFile对应fs.readFileAsync，fs.mkdir对应fs.mkdirAsync，以此类推。</p>
+<p>另外要注意的就是，Promise版本的函数除了最后一个参数（回调函数），
+其它参数与原函数均一一对应，调用的时候别忘了传递原有的参数。</p>
+<p>注：如果你正在使用mongoose，除了bluebird你可能还需要mongoomise，它的优点在于：</p>
+<ul>
+<li>能够接受任意的Promise Library (Q/when.js/RSVP/bluebird/es6-promise等等)</li>
+<li>能够对Model自定义静态私有方法进行promisify，而bluebird.promisifyAll不支持</li>
+<li>mongoomise + bluebird与仅使用bluebird性能相差无几，可能更好。</li>
+</ul>
+</li>
+<li><p>resolve 和 reject</p>
+<pre><code>return Promise.resolve(result);
+</code></pre><pre><code>return Promise.reject(err);
+</code></pre></li>
+<li><p>Promise.all()</p>
+<pre><code>...
+.then(function(sendReq){
+    ...
+    var queue = [];
+    ...
+    for(var i = 0; i &lt; items.length; i++){
+      ...
+      var p = StockInfo.update({product:product_id}, {$set:{
+        ...
+      }})
+
+      queue.push(p);
+    }
+    return Promise.all(queue);
+})
+...
+</code></pre></li>
+<li><p>node 中的 promise 实现</p>
+<ul>
+<li>bluebird （<a href="https://github.com/petkaantonov/bluebird">https://github.com/petkaantonov/bluebird</a>）</li>
+<li>q （<a href="https://github.com/kriskowal/q">https://github.com/kriskowal/q</a>）Angularjs的$q对象是q的精简版</li>
+<li>then （<a href="https://github.com/teambition/then.js">https://github.com/teambition/then.js</a>）</li>
+<li>when  （<a href="https://github.com/cujojs/when">https://github.com/cujojs/when</a>）</li>
+<li>async  （<a href="https://github.com/caolan/async">https://github.com/caolan/async</a>）</li>
+<li>eventproxy（<a href="https://github.com/JacksonTian/eventproxy">https://github.com/JacksonTian/eventproxy</a>）朴灵作品 使用event来处理流程</li>
+</ul>
+</li>
+<li><p>总结</p>
+<p>node.js风格函数指的是这样的一种异步函数，它接受的最后一个参数是异步操作完成之后的回调函数，
+这个回调函数的第一个参数接受执行错误的Error对象，第二个参数接受成功返回值）。</p>
+<p>promisify大概的意思就是根据一个node.js风格的异步方法生成另一个等价的Promise风格的
+方法（这个方法返回值是一个Promise，其它形参与原方法相同除了没有最后一个回调函数），
+这个名词我最早是看到bluebird使用。</p>
+</li>
+</ul>
+<h2 id="restful">RESTful</h2>
+<ul>
+<li><p>参考资料</p>
+<p><a href="http://www.ruanyifeng.com/blog/2011/09/restful">http://www.ruanyifeng.com/blog/2011/09/restful</a></p>
+<p><a href="http://www.csdn.net/article/2013-06-13/2815744-RESTful-API">http://www.csdn.net/article/2013-06-13/2815744-RESTful-API</a></p>
+</li>
+<li><p>REST</p>
+<p>REST（Representational State Transfer）：表现层状态转化</p>
+<p>REST 是一种软件架构风格，设计风格而不是标准，只是提供了一组设计原则和约束条件。
+它主要用于客户端和服务器交互类的软件。基于这个风格设计的软件可以更简洁，
+更有层次，更易于实现缓存等机制。</p>
+<p>RESTful架构：</p>
+<ol>
+<li>每一个URI代表一种资源；</li>
+<li>客户端和服务器之间，传递这种资源的某种表现层；</li>
+<li>客户端通过四个HTTP动词，对服务器端资源进行操作，实现&quot;表现层状态转化&quot;。</li>
+</ol>
+</li>
+<li><p>资源（Resources）</p>
+<p>REST的名称&quot;表现层状态转化&quot;中，省略了主语。&quot;表现层&quot;其实指的是&quot;资源&quot;的&quot;表现层&quot;。</p>
+<p>&quot;资源&quot;，就是网络上的一个实体，它可以是一段文本、一张图片、一首歌曲、一种服务，
+可以用一个URI（统一资源定位符）指向它，每种资源对应一个特定的URI。</p>
+</li>
+<li><p>表现层（Representation）</p>
+<p>&quot;资源&quot;是一种信息实体，它可以有多种外在表现形式。</p>
+<p>我们把&quot;资源&quot;具体呈现出来的形式，叫做它的&quot;表现层&quot;</p>
+<p>比如，文本可以用txt格式表现，也可以用HTML格式、XML格式、JSON格式表现，甚至可以采用二进制格式；
+图片可以用JPG格式表现，也可以用PNG格式表现。。</p>
+<p>URI只代表资源的实体，不代表它的形式。严格地说，有些网址最后的&quot;.html&quot;后缀名是不必要的，
+因为这个后缀名表示格式，属于&quot;表现层&quot;范畴，而URI应该只代表&quot;资源&quot;的位置。</p>
+</li>
+<li><p>状态转化（State Transfer）</p>
+<p>如果客户端想要操作服务器，必须通过某种手段，让服务器端发生&quot;状态转化&quot;（State Transfer）。
+而这种转化是建立在表现层之上的，所以就是&quot;表现层状态转化&quot;。</p>
+<p>四种基本操作：GET用来获取资源，POST用来新建资源（也可以用于更新资源），
+PUT用来更新资源，DELETE用来删除资源</p>
+</li>
+<li><p>实现</p>
+<ol>
+<li><p>因为&quot;资源&quot;表示一种实体，所以应该是名词，URI不应该有动词</p>
+<p>如何拆分出这些资源：</p>
+<pre><code>GET     /tickets        # 获取ticket列表
+GET     /tickets/12     # 查看某个具体的ticket
+POST    /tickets        # 新建一个ticket
+PUT     /tickets/12     # 更新ticket 12.
+DELETE  /tickets/12     # 删除ticekt 12
+</code></pre><p>如何处理关联？</p>
+<pre><code>GET     /tickets/12/messages    - Retrieves list of messages for ticket #12
+GET     /tickets/12/messages/5  - Retrieves message #5 for ticket #12
+POST    /tickets/12/messages    - Creates a new message in ticket #12
+PUT     /tickets/12/messages/5  - Updates message #5 for ticket #12
+PATCH   /tickets/12/messages/5  - Partially updates message #5 for ticket #12
+DELETE  /tickets/12/messages/5  - Deletes message #5 for ticket #12
+</code></pre></li>
+<li><p>更新和创建操作应该返回资源</p>
+<p>PUT、POST、PATCH 操作在对资源进行操作的时候常常有一些副作用：例如created_at,updated_at 时间戳。
+为了防止用户多次的API调用（为了进行此次的更新操作），我们应该会返回更新的资源（updated representation.）
+例如：在POST操作以后，返回201 created 状态码，并且包含一个指向新资源的url作为返回头.</p>
+</li>
+<li><p>版本信息放入url还是放入请求头</p>
+<p>strip使用的方法就很好：它的url里面有主版本信息，同时请求头俩面有子版本信息。
+这样在子版本变化过程中url的稳定的。变化有时是不可避免的，关键是如何管理变化。
+完整的文档和合理的时间表都会使得API使用者使用的更加轻松。</p>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="-">利用多核的优势</h2>
+<ul>
+<li><p>简介</p>
+<p>现代的计算机CPU大多数都是多核的,但单个Node进程在运行时只能使用其中的一个内核。
+为了让单个程序使用多核实现起来更容易,Node增加了集群(cluster)API。</p>
+</li>
+<li><p>示例</p>
+<pre><code class="lang-JAVASCRIPT">var cluster = require(&#39;cluster&#39;);
+var http = require(&#39;http&#39;);
+var numCPUs = require(&#39;os&#39;).cpus().length;
+var workers = {};
+var requests = 0;
+if (cluster.isMaster) {
+  for (var i = 0; i &lt; numCPUs; i++) {
+    workers[i] = cluster.fork();
+    (function (i) {
+      workers[i].on(&#39;message&#39;, function(message) {
+        if (message.cmd == &#39;incrementRequestTotal&#39;) {
+          requests++;
+          for (var j = 0; j &lt; numCPUs; j++) {
+            workers[j].send({
+              cmd:
+              &#39;updateOfRequestTotal&#39;,
+              requests: requests
+            });
+          }
+        }
+      });
+    })(i);
+  }
+  cluster.on(&#39;death&#39;, function(worker) {
+    console.log(&#39;Worker &#39; + worker.pid + &#39; died.&#39;);
+  });
+} else {
+  process.on(&#39;message&#39;, function(message) {
+    if (message.cmd == &#39;updateOfRequestTotal&#39;) {
+      requests = message.requests;
+    }
+  });
+  http.Server(function(req, res) {
+    res.writeHead(200);
+    res.end(&#39;Worker ID &#39; + process.env.NODE_WORKER_ID
+    + &#39; says cluster has responded to &#39; + requests
+    + &#39; requests.&#39;);
+    process.send({cmd: &#39;incrementRequestTotal&#39;});
+  }).listen(8000);
+}
+</code></pre>
+</li>
+</ul>
+<h2 id="https">HTTPS</h2>
+<ul>
+<li><p>简介</p>
+<p>安全的超文本传输协议，提供了一种保证 Web 会话私密性的方法。将 HTTP 和 TLS/SSL 传输层
+结合到一起</p>
+</li>
+<li><p>私钥和公钥（证书）</p>
+<p>私钥用来解密客户端发往服务器的数据</p>
+<p>公钥（证书）用来加密从客户端发往服务器的数据</p>
+</li>
+<li><p>生成</p>
+<p>生成私钥使用 OpenSSL： </p>
+<p><code>openssl genrsa 1024 &gt; key.pem</code></p>
+<p>生成公钥（证书）需要私钥：</p>
+<p><code>openssl req -x509 -new -key key.pem &gt; key-cert.pem</code></p>
+</li>
+<li><p>应用</p>
+<pre><code class="lang-JAVASCRIPT">var https = require(&#39;https&#39;);
+var fs = require(&#39;fs&#39;);
+var options = {
+  key: fs.readFileSync(&#39;./key.pem&#39;),
+  cert: fs.readFileSync(&#39;./key-cert.pem&#39;)
+};
+https.createServer(options, function (req, res) {
+  res.writeHead(200);
+  res.end(&quot;hello world\n&quot;);
+}).listen(3000);
+</code></pre>
+</li>
+<li><p>目录遍历攻击</p>
+<p><a href="http://en.wikipedia.org/wiki/Directory_traversal_attack">http://en.wikipedia.org/wiki/Directory_traversal_attack</a></p>
+</li>
+</ul>
+<h2 id="cookie">COOKIE</h2>
+<ul>
+<li><p>基础</p>
+<p>在HTML文档被发送之前，Web服务器通过传送HTTP 包头中的Set-Cookie 消息把一个cookie 发送到用户的浏览器中，如下示例：</p>
+<pre><code>Set-Cookie: name=value; Path=/; expires=Wednesday, 09-Nov-99 23:12:40 GMT;
+</code></pre><p>其中比较重要的属性：</p>
+<pre><code>name=value：键值对，可以设置要保存的 Key/Value，注意这里的 name 不能和其他属性项的名字一样
+Expires： 过期时间（秒），在设置的某个时间点后该 Cookie 就会失效，如 expires=Wednesday, 09-Nov-99 23:12:40 GMT
+maxAge： 最大失效时间（毫秒），设置在多少后失效
+secure： 当 secure 值为 true 时，cookie 在 HTTP 中是无效，在 HTTPS 中才有效
+Path： 表示 cookie 影响到的路径，如 path=/。如果路径不能匹配时，浏览器则不发送这个Cookie
+httpOnly: 是微软对COOKIE做的扩展。如果在COOKIE中设置了“httpOnly”属性，则通过程序（JS脚本、applet等）将无法读取到COOKIE信息，防止XSS攻击产生
+</code></pre></li>
+<li><p>node.js 中的 cookie</p>
+<p>两个方案：</p>
+<p>1.使用 <code>response.writeHead</code></p>
+<p>缺点：使用response.writeHead只能发送一次头部，即只能调用一次，且不能与response.render共存，否则会报错。</p>
+<pre><code class="lang-javascript">//设置过期时间为一分钟
+var today = new Date();
+var time = today.getTime() + 60*1000;
+var time2 = new Date(time);
+var timeObj = time2.toGMTString();
+response.writeHead({
+   &#39;Set-Cookie&#39;:&#39;myCookie=&quot;type=ninja&quot;, &quot;language=javascript&quot;;path=&quot;/&quot;;Expires=&#39;+timeObj+&#39;;httpOnly=true&#39;
+});
+</code></pre>
+<p>2.使用 <code>response.cookie</code></p>
+<p>语法: <code>response.cookie(&#39;cookieName&#39;, &#39;name=value[name=value...]&#39;,[options]);</code></p>
+<pre><code class="lang-javascript">response.cookie(&#39;haha&#39;, &#39;name1=value1&amp;name2=value2&#39;, {maxAge:10*1000, path:&#39;/&#39;, httpOnly:true});
+</code></pre>
+</li>
+<li><p>cookieParser</p>
+<p>express 在 4.x 版本之后，管理session和cookies等许多模块都不再直接包含在express中， 而是需要单独下载安装相应模块。</p>
+<p><code>$ npm install cookie-parser</code></p>
+<p>使用示例：</p>
+<pre><code class="lang-javascript">var express      = require(&#39;express&#39;);
+var cookieParser = require(&#39;cookie-parser&#39;);
+
+var app = express();
+app.use(cookieParser());
+
+app.get(&#39;/&#39;, function (req, res) {
+    // 如果请求中的 cookie 存在 isVisit, 则输出 cookie
+    // 否则，设置 cookie 字段 isVisit, 并设置过期时间为1分钟
+    if (req.cookies.isVisit) {
+        console.log(req.cookies);
+        res.send(&quot;再次欢迎访问&quot;);
+    } else {
+        res.cookie(&#39;isVisit&#39;, 1, {maxAge: 60 * 1000});
+        res.send(&quot;欢迎第一次访问&quot;);
+    }
+});
+app.listen(80);
+</code></pre>
+</li>
+</ul>
+<h2 id="session">SESSION</h2>
+<ul>
+<li><p>简介</p>
+<p>session是另一种记录客户状态的机制，不同的是Cookie保存在客户端浏览器中，而session保存在服务器上。</p>
+</li>
+<li><p>区别</p>
+<p>cookie 和 session 的区别：</p>
+<p>cookie数据存放在客户的浏览器上，session数据放在服务器上。</p>
+<p>cookie不是很安全，别人可以分析存放在本地的COOKIE并进行COOKIE欺骗 考虑到安全应当使用session。</p>
+<p>session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能 考虑到减轻服务器性能方面，应当使用COOKIE。</p>
+<p>单个cookie保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie。</p>
+<p>所以建议：将登陆信息等重要信息存放为session、其他信息如果需要保留，可以放在cookie中</p>
+</li>
+<li><p>express-session</p>
+<p>安装：　<code>$ npm install express-session</code></p>
+<p>方法： <code>session(options)</code>，其中 options 中包含可选参数，主要有：</p>
+<pre><code>name: 设置 cookie 中，保存 session 的字段名称，默认为 connect.sid 。
+store: session 的存储方式，默认存放在内存中，也可以使用 redis，mongodb 等。express 生态中都有相应模块的支持。
+secret: 通过设置的 secret 字符串，来计算 hash 值并放在 cookie 中，使产生的 signedCookie 防篡改。
+cookie: 设置存放 session id 的 cookie 的相关选项，默认为 (default: { path: &#39;/&#39;, httpOnly: true, secure: false, maxAge: null })
+genid: 产生一个新的 session_id 时，所使用的函数， 默认使用 uid2 这个 npm 包。
+rolling: 每个请求都重新设置一个 cookie，默认为 false。
+resave: 即使 session 没有被修改，也保存 session 值，默认为 true。
+</code></pre><pre><code class="lang-javascript">var express = require(&#39;express&#39;);
+var session = require(&#39;express-session&#39;);
+var app = express();
+
+app.use(session({
+    secret: &#39;hello&#39;, //secret的值建议使用128个随机字符串
+    cookie: {maxAge: 60 * 1000 * 30} // 过期时间（毫秒）
+}));
+app.get(&#39;/&#39;, function (req, res) {
+    if (req.session.sign) {//检查用户是否已经登录
+        console.log(req.session);//打印session的值
+        res.send(&#39;welecome &lt;strong&gt;&#39; + req.session.name + &#39;&lt;/strong&gt;, 欢迎你再次登录&#39;);
+    } else {
+        req.session.sign = true;
+        req.session.name = &#39;Tom&#39;;
+        res.send(&#39;欢迎登陆！&#39;);
+    }
+});
+app.listen(80);
+</code></pre>
+</li>
+<li><p>基于 Redis 管理 Session</p>
+<p>安装 </p>
+<pre><code>$ npm install connect-redis
+</code></pre><p>参数</p>
+<pre><code>client 你可以复用现有的redis客户端对象， 由 redis.createClient() 创建
+host Redis服务器名
+port Redis服务器端口
+socket Redis服务器的unix_socket
+</code></pre><p>可选参数</p>
+<pre><code>ttl Redis session TTL 过期时间 （秒）
+disableTTL 禁用设置的 TTL
+db 使用第几个数据库
+pass Redis数据库的密码
+prefix 数据表前辍即schema, 默认为 &quot;sess:&quot;
+</code></pre><p>req在经过session中间件的时候就会自动完成session的有效性验证、延期/重新颁发、以及对session中数据的获取了。</p>
+<pre><code class="lang-javascript">var express = require(&#39;express&#39;);
+var session = require(&#39;express-session&#39;);
+var RedisStore = require(&#39;connect-redis&#39;)(session);
+
+var app = express();
+var options = {
+    &quot;host&quot;: &quot;127.0.0.1&quot;,
+    &quot;port&quot;: &quot;6379&quot;,
+    &quot;ttl&quot;: 60 * 60 * 24 * 30,   //session的有效期为30天(秒)
+};
+
+// 此时req对象还没有session这个属性
+app.use(session({
+    store: new RedisStore(options),
+    secret: &#39;express is powerful&#39;
+}));
+
+app.listen(80);
+</code></pre>
+</li>
+</ul>
+<h2 id="-">加密密码</h2>
+<ul>
+<li><p>bcrypt</p>
+<p>bcrypt 是一个加盐的哈希函数，是专门用来对密码做哈希处理的第三方模块。</p>
+<pre><code class="lang-javascript">User.prototype.hashPassword = function (fn) {
+  var user = this;
+  bcrypt.genSalt(12, function (err, salt) {
+    if (err) return fn(err);
+    user.salt = salt;
+    bcrypt.hash(user.pass, salt, function (err, hash) {
+      if (err) return fn(err);
+      user.pass = hash;
+      fn();
+    })
+  })
+}
+</code></pre>
+<pre><code class="lang-javascript">User.prototype.authenticate = function (name, pass, fn) {
+  User.getByName(name, function (err, user) {
+    if (err) return fn(err);
+    if (!user.id) return fn();
+    bcrypt.hash(pass, user.salt, function (err, hash) {
+      if (err) return fn(err);
+      if (hash === user.pass) return fn(null, user);
+      fn();
+    })
+  })
+}
+</code></pre>
+</li>
+</ul>
+<h2 id="-">命令行工具</h2>
+<ul>
+<li><p>创建 package.json</p>
+<p><code>npm init</code></p>
+<pre><code>{
+  &quot;name&quot;: &quot;node-command-line-tool&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;description&quot;: &quot;To make a node command line tool&quot;,
+  &quot;main&quot;: &quot;index.js&quot;,
+  &quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;
+  },
+  &quot;preferGlobal&quot;: &quot;true&quot;,
+  &quot;bin&quot;: {
+    &quot;hit&quot;: &quot;bin/hit.js&quot;
+  },
+  &quot;keywords&quot;: [
+    &quot;command&quot;,
+    &quot;line&quot;
+  ],
+  &quot;author&quot;: &quot;modood&quot;,
+  &quot;license&quot;: &quot;ISC&quot;
+}
+</code></pre></li>
+<li><p>编写脚本代码</p>
+<p><code>npm install commander --save</code></p>
+<p>创建 bin/hit.js 文件：</p>
+<pre><code class="lang-javascript">#!/usr/bin/env node
+
+var program = require(&#39;commander&#39;);
+
+program
+  .version(&#39;0.0.1&#39;)
+  .option(&#39;-p, --print&#39;, &#39;print Hello World&#39;)
+  .option(&#39;-s, --show&#39;, &#39;show github page&#39;)
+  .parse(process.argv);
+
+if (program.print) {
+  console.log(&#39;Hello World&#39;);
+};
+
+if (program.show) {
+  console.log(&#39;https://github.com/modood&#39;);
+};
+
+console.log(&#39;wow! you made it!&#39;);
+</code></pre>
+</li>
+<li><p>完成</p>
+<p><code>sudo npm link</code></p>
+<p>本地创建链接文件测试效果</p>
+<pre><code>$ hit -h
+
+  Usage: hit [options]
+
+  Options:
+
+    -h, --help     output usage information
+    -V, --version  output the version number
+    -p, --print    print Hello World
+    -s, --show     show github page
+</code></pre></li>
+</ul>
+<h2 id="-">中间件机制</h2>
+<ul>
+<li><p>简介</p>
+<p>在 Connect 中，中间件组件是一个 JavaScript 函数，它拦截 HTTP 服务器提供的请求和响应对象
+按惯例会接受三个参数：一个请求对象，一个响应对象，还有一个通常命名为 next 的参数，它是一个回
+调函数，表明这个组件已经完成了它的工作，可以执行下一个中间件组件了。</p>
+</li>
+<li><p>注意</p>
+<p>如果 next 不调用，控制权就不会被交回到分派器去调用下一个中间件组件，命令链中的后续中间件都不
+会被调用，因此中间件的顺序也很重要。</p>
+</li>
+<li><p>挂载</p>
+<p>挂载可以给中间件或整个程序定义一个路径前缀。</p>
+<pre><code class="lang-javascript">connect()
+  .use(logger)
+  .use(&#39;/admin&#39;, restrict)
+  .listen(3000);
+</code></pre>
+</li>
+<li><p>创建可配置的中间件</p>
+<p>可配置的中间件可以传入额外的参数来改变它的行为</p>
+<p>例如：可配置的 Connect 中间件组件 logger</p>
+<pre><code class="lang-javascript">function logger(format) {
+  var regexp = /:(\w+)/g;
+  return function (req, res, next) {
+    var str = format.replace(regexp, function(match, property){
+      return req[property];
+    });
+    console.log(str);
+    next();
+  }
+}
+module.exports = logger;
+</code></pre>
+<pre><code>connect()
+  .use(logger(&#39;:method:url&#39;))
+</code></pre></li>
+<li><p>错误处理中间件</p>
+<p>错误处理中间件函数必须接受四个参数：err, req, res, next</p>
+<pre><code class="lang-javascript">function errorHandler() {
+  var env = process.env.NODE_ENV || &#39;development&#39;;
+  return function(err, req, res, next) {
+    res.statusCode = 500;
+    switch (env) {
+      case &#39;development&#39;:
+        res.setHeader(&#39;Content-Type&#39;, &#39;application/json&#39;);
+        res.end(JSON.stringify(err));
+        break;
+      default:
+        res.end(&#39;Server error&#39;);
+    }
+  }
+}
+</code></pre>
+</li>
+</ul>
+<h2 id="nginx">nginx</h2>
+<ul>
+<li><p>简介</p>
+<p>尽管Node在提供动态内容服务时很高效,但在提供图片、 CSS样式表或客户端JavaScript等静
+态文件服务时并不是最有效的办法。</p>
+<p>通过HTTP提供静态文件的服务应该交给专门针对这个特定任务优化过的特定软件项目,
+因为它们多年以来主要专注于这项任务。</p>
+<p>Nginx (<a href="http://nginx.org/en/">http://nginx.org/en/</a>) 是一个专门针对静态文件服务做过优化的开源Web服务器,很容
+易设置成跟Node一起提供那些文件服务。在典型的Nginx/Node配置中,一般由Nginx先处理所有
+Web请求,再将非静态文件的请求转给Node。</p>
+</li>
+<li><p>安装</p>
+<p><code>sudo apt-get install nginx</code></p>
+</li>
+<li><p>配置文件</p>
+<p><code>/etc/nginx/nginx.conf</code></p>
+</li>
+<li><p>配置选项</p>
+<pre><code>http {
+  upstream my_node_app {
+    server 127.0.0.1:8000;
+  }
+  server {
+    listen 80;
+    server_name localhost domain.com;
+    access_log /var/log/nginx/my_node_app.log;
+    location ~ /static/ {
+      root /home/node/my_node_app;
+      if (!-f $request_filename) {
+        return 404;
+      }
+    }
+    location / {
+      proxy_pass http://my_node_app;
+      proxy_redirect off;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $http_host;
+      proxy_set_header X-NginX-Proxy true;
+    }
+  }
+}
+</code></pre></li>
+</ul>
+<h1 id="-">专业术语</h1>
+<h2 id="commonjs">CommonJS</h2>
+<ul>
+<li><p>简介</p>
+<p>CommonJS是一种规范，NodeJS是这种规范的实现</p>
+</li>
+<li><p>官网</p>
+<p><a href="http://www.commonjs.org/">http://www.commonjs.org/</a></p>
+</li>
+</ul>
+<h2 id="dirt">DIRT</h2>
+<ul>
+<li><p>简介</p>
+<p>(data-intensive real-time)</p>
+<p>数据密集型实时程序</p>
+</li>
+<li><p>示例： Browserling(<browserling.com>)</p>
+<p>一个用Node开发的DIRT程序。在这个网站上,可以在浏览器中使用各种浏览器。
+Browserling用了一个叫做StackVM的由Node驱动的项目,
+而StackVM管理了用QEMU(快速模拟器)模拟器创建的虚拟机,
+QEMU会模拟运行浏览器所需的CPU和外设。</p>
+</li>
+<li><p>示例： Testling(<testling.com>)</p>
+<p>可以通过命令行在多个浏览器上并行运行测试包。</p>
+</li>
+</ul>
+<h2 id="repl">REPL</h2>
+<ul>
+<li><p>简介</p>
+<p>（Read-Eval-Print-Loop）</p>
+<p>一种交互式计算机编程环境</p>
+</li>
+</ul>
+<h2 id="mime">MIME</h2>
+<ul>
+<li><p>维基百科</p>
+<p><a href="http://en.wikipedia.org/wiki/MIME">http://en.wikipedia.org/wiki/MIME</a> </p>
+</li>
+<li><p>简介</p>
+<p>通过HTTP提供文件时，要用正确的MIME类型设置HTTP头的 Content-Type 。</p>
+</li>
+<li><p>Node模块： mime</p>
+</li>
+</ul>
+<h2 id="websocket">WebSocket</h2>
+<ul>
+<li><p>维基百科 </p>
+<p><a href="http://en.wikipedia.org/wiki/WebSocket">http://en.wikipedia.org/wiki/WebSocket</a></p>
+</li>
+<li><p>简介</p>
+<p>一个为支持实时通讯而设计的轻量的双向通信协议。</p>
+</li>
+<li><p>Node模块： socket.io</p>
+</li>
+</ul>
+
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+});
+//-->
+</SCRIPT>
