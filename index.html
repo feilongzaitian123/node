@@ -192,6 +192,31 @@ pm2 monit                       监控
 pm2 logs                        实时集中log处理
 pm2 web                         API(端口：9615 )
 </code></pre></li>
+<li><p>保存</p>
+<pre><code>pm2 save
+</code></pre></li>
+<li><p>恢复</p>
+<pre><code>pm2 resurrect
+</code></pre></li>
+</ul>
+<h2 id="gitbook">gitbook</h2>
+<ul>
+<li><p>官网</p>
+<p><a href="https://github.com/GitbookIO/gitbook">https://github.com/GitbookIO/gitbook</a></p>
+</li>
+<li><p>安装</p>
+<pre><code>npm install gitbook-cli -g
+</code></pre></li>
+<li><p>命令</p>
+<pre><code>gitbook install         安装插件
+gitbook build           生成
+</code></pre></li>
+<li><p>插件</p>
+<p>book.json 文件：</p>
+<pre><code>{
+  &quot;plugins&quot;: [&quot;toggle-chapters&quot;]
+}
+</code></pre></li>
 </ul>
 <h1 id="-">调试</h1>
 <h2 id="-">代码检查</h2>
@@ -288,11 +313,41 @@ jshint my_app.js
 <p>单元测试：</p>
 <pre><code>测试驱动开发(TDD)： assert, nodeunit, Mocha, chai
 行为驱动开发(BDD)： Mocha, chai, Vows, should.js
-</code></pre><p>测试覆盖率:</p>
-<pre><code>istanbul
 </code></pre></li>
+<li><p>测试框架</p>
+<p><a href="https://github.com/mochajs/mocha">mocha</a></p>
+</li>
+<li><p>断言库</p>
+<p><a href="https://github.com/chaijs/chai">chai</a>
+<a href="https://github.com/tj/should.js">should.js</a></p>
+</li>
+<li><p>api 测试</p>
+<p><a href="https://github.com/visionmedia/supertest">supertest</a></p>
+<p>post 测试示例：</p>
+<pre><code>request(app)
+  .post(&#39;/v1/inventories/do/search&#39;)
+  .set(&#39;x-access-token&#39;, mock_token)
+  .set(&#39;Accept&#39;, &#39;application/json&#39;)
+  .send({
+    &quot;keywords&quot;: &quot;啤酒&quot;
+  })
+  .expect(200)
+  .expect(function(res) {
+    res.body.data.length.should.above(0);
+  })
+  .end(function(err, res){
+    if (err) return done(err);
+    done();
+  });
+</code></pre></li>
+<li><p>测试覆盖率</p>
+<p><a href="https://github.com/gotwarlost/istanbul">istanbul</a></p>
+</li>
 </ul>
 <h2 id="mocha">mocha</h2>
+<h2 id="chai">chai</h2>
+<h2 id="supertest">supertest</h2>
+<h2 id="istanbul">istanbul</h2>
 <h1 id="-">全局对象和核心模块</h1>
 <h2 id="process">process</h2>
 <ul>
@@ -363,6 +418,31 @@ child.on(&#39;exit&#39;, function (code, signal) {
 </li>
 </ul>
 <h1 id="-">知识点</h1>
+<h2 id="-">命令行工具</h2>
+<ul>
+<li><a href="https://github.com/sintaxi/harp">harp</a></li>
+<li><a href="https://github.com/indexzero/http-server">http-server</a></li>
+<li><a href="https://github.com/mongo-express/mongo-express">mongo-express</a></li>
+<li><a href="https://github.com/i5ting/tocmd.npm">i5ting_toc</a></li>
+<li><a href="https://github.com/driftyco/ionic">ionic</a></li>
+</ul>
+<h2 id="-http-">发起 HTTP 请求</h2>
+<ul>
+<li><p><a href="https://github.com/request/request">request</a></p>
+<p>github 地址</p>
+<p><a href="https://github.com/request/request">https://github.com/request/request</a></p>
+<p>用法</p>
+<p>POST请求：</p>
+<pre><code class="lang-javascript">request({
+  method: &#39;POST&#39;,
+  url: &#39;http://admin.api.mengxiaoban.cn/v1/push/create&#39;,
+  json: doc
+}, function () {
+  // ...
+});
+</code></pre>
+</li>
+</ul>
 <h2 id="-">异步编程</h2>
 <ul>
 <li><p>简介</p>
@@ -445,7 +525,13 @@ readStream.pipe(writeStream);
 <h2 id="-">流程控制</h2>
 <ul>
 <li><p>工具</p>
-<p>Nimble、Step、Seq</p>
+<p><a href="https://github.com/petkaantonov/bluebird">bluebird</a>
+<a href="https://github.com/JacksonTian/eventproxy">eventproxy</a>
+<a href="https://github.com/tj/co">co</a>
+<a href="https://github.com/creationix/step">step</a>
+<a href="https://github.com/caolan/nimble">nimble</a>
+<a href="https://github.com/substack/node-seq">seq</a>
+<a href="https://github.com/supershabam/ready1">ready</a></p>
 </li>
 <li><p>文章</p>
 <p><a href="http://mng.bz/wKnV">虚拟座谈: 如何从JavaScript异步编程中活下来</a></p>
@@ -1008,6 +1094,43 @@ module.exports = logger;
   }
 }
 </code></pre>
+</li>
+</ul>
+<h2 id="-">消息队列</h2>
+<ul>
+<li><p>简介</p>
+<p>MQ全称为Message Queue, 消息队列（MQ）是一种应用程序对应用程序的通信方法。</p>
+<p>MQ是消费-生产者模型的一个典型的代表，一端往消息队列中不断写入消息，而另一端则可以读取或者订阅队列中的消息。</p>
+<p>在项目中，将一些无需即时返回且耗时的操作提取出来，进行了异步处理，而这种异步处理的方式大大的节省了服务器的请求响应时间，从而提高了系统的吞吐量。</p>
+</li>
+<li><p>工具</p>
+<p><a href="https://github.com/Automattic/kue">kue</a></p>
+<p><a href="http://www.rabbitmq.com/">rabbitmq</a> : github主页 （<a href="https://github.com/rabbitmq">https://github.com/rabbitmq</a>）</p>
+</li>
+</ul>
+<h2 id="-">日志</h2>
+<ul>
+<li><p>工具</p>
+<p><a href="https://github.com/nomiddlename/log4js-node">log4js</a></p>
+</li>
+</ul>
+<h2 id="-">参数校验</h2>
+<ul>
+<li><p>工具</p>
+<p><a href="https://github.com/arasatasaygin/is.js">is.js</a></p>
+</li>
+</ul>
+<h2 id="mongoose-">mongoose 模糊查询</h2>
+<ul>
+<li><p>使用</p>
+<p>``
+var condition = {$or:[
+  {user_name:{$regex:keywords, $options:&#39;i&#39;}},
+  {user_name_pinyin:{$regex:keywords, $options:&#39;i&#39;}},
+  {product_name:{$regex:keywords, $options:&#39;i&#39;}},
+  {product_name_pinyin:{$regex:keywords,$options:&#39;i&#39;}}
+]}
+```</p>
 </li>
 </ul>
 <h2 id="nginx">nginx</h2>
