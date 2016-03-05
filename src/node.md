@@ -155,6 +155,47 @@
     pm2 web                         API(端口：9615 ) 
     ```
 
+-   保存
+
+    ```
+    pm2 save
+    ```
+
+-   恢复
+
+    ```
+    pm2 resurrect
+    ```
+
+## gitbook
+
+-   官网
+
+    <https://github.com/GitbookIO/gitbook>
+
+-   安装
+
+    ```
+    npm install gitbook-cli -g
+    ```
+
+-   命令
+
+    ```
+    gitbook install         安装插件
+    gitbook build           生成 
+    ```
+
+-   插件
+
+    book.json 文件：
+
+    ```
+    {
+      "plugins": ["toggle-chapters"]
+    }
+    ```
+
 # 调试
 
 ## 代码检查
@@ -291,12 +332,49 @@
     行为驱动开发(BDD)： Mocha, chai, Vows, should.js
     ```
 
-    测试覆盖率:
+-   测试框架
+
+    [mocha](https://github.com/mochajs/mocha)
+
+-   断言库
+
+    [chai](https://github.com/chaijs/chai)
+    [should.js](https://github.com/tj/should.js)
+
+-   api 测试
+
+    [supertest](https://github.com/visionmedia/supertest)
+
+    post 测试示例：
+
     ```
-    istanbul
+    request(app)
+      .post('/v1/inventories/do/search')
+      .set('x-access-token', mock_token)
+      .set('Accept', 'application/json')
+      .send({
+        "keywords": "啤酒"
+      })
+      .expect(200)
+      .expect(function(res) {
+        res.body.data.length.should.above(0);
+      })
+      .end(function(err, res){
+        if (err) return done(err);
+        done();
+      });
     ```
+-   测试覆盖率
+
+    [istanbul](https://github.com/gotwarlost/istanbul)
 
 ## mocha
+
+## chai
+
+## supertest
+
+## istanbul
 
 # 全局对象和核心模块
 
@@ -392,6 +470,36 @@
 
 # 知识点
 
+## 命令行工具
+
+-   [harp](https://github.com/sintaxi/harp)
+-   [http-server](https://github.com/indexzero/http-server)
+-   [mongo-express](https://github.com/mongo-express/mongo-express)
+-   [i5ting_toc](https://github.com/i5ting/tocmd.npm)
+-   [ionic](https://github.com/driftyco/ionic)
+
+## 发起 HTTP 请求
+
+-   [request](https://github.com/request/request)
+
+    github 地址
+
+    <https://github.com/request/request>
+
+    用法
+
+    POST请求：
+
+    ```javascript
+    request({
+      method: 'POST',
+      url: 'http://admin.api.mengxiaoban.cn/v1/push/create',
+      json: doc
+    }, function () {
+      // ...
+    });
+    ```
+
 ## 异步编程
 
 -   简介
@@ -484,7 +592,13 @@
 
 -   工具
     
-    Nimble、Step、Seq
+    [bluebird](https://github.com/petkaantonov/bluebird)
+    [eventproxy](https://github.com/JacksonTian/eventproxy)
+    [co](https://github.com/tj/co)
+    [step](https://github.com/creationix/step)
+    [nimble](https://github.com/caolan/nimble)
+    [seq](https://github.com/substack/node-seq)
+    [ready](https://github.com/supershabam/ready1)
 
 -   文章
 
@@ -1186,6 +1300,47 @@
         }
       }
     }
+    ```
+
+## 消息队列
+
+-   简介
+
+    MQ全称为Message Queue, 消息队列（MQ）是一种应用程序对应用程序的通信方法。
+
+    MQ是消费-生产者模型的一个典型的代表，一端往消息队列中不断写入消息，而另一端则可以读取或者订阅队列中的消息。
+
+    在项目中，将一些无需即时返回且耗时的操作提取出来，进行了异步处理，而这种异步处理的方式大大的节省了服务器的请求响应时间，从而提高了系统的吞吐量。
+
+-   工具
+
+    [kue](https://github.com/Automattic/kue)
+
+    [rabbitmq](http://www.rabbitmq.com/) : github主页 （<https://github.com/rabbitmq>）
+
+## 日志
+
+-   工具
+
+    [log4js](https://github.com/nomiddlename/log4js-node)
+
+## 参数校验
+
+-   工具
+  
+    [is.js](https://github.com/arasatasaygin/is.js)
+
+## mongoose 模糊查询
+
+-   使用
+
+    ``
+    var condition = {$or:[
+      {user_name:{$regex:keywords, $options:'i'}},
+      {user_name_pinyin:{$regex:keywords, $options:'i'}},
+      {product_name:{$regex:keywords, $options:'i'}},
+      {product_name_pinyin:{$regex:keywords,$options:'i'}}
+    ]}
     ```
 
 ## nginx
